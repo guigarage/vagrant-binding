@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+require 'log4r'
+require 'vagrant'
+require 'vagrant/cli'
+require 'vagrant/util/platform'
+
+# Create a logger right away
+logger = Log4r::Logger.new("vagrant::bin::vagrant")
+logger.info("`vagrant` invoked: #{ARGV.inspect}")
+
+# Stdout/stderr should not buffer output
+$stdout.sync = true
+$stderr.sync = true
+
+# These will be the options that are passed to initialze the Vagrant
+# environment.
+opts = {}
+
+# Disable color if the proper argument was passed or if we're
+# on Windows since the default Windows terminal doesn't support
+# colors.
+if ARGV.include?("--no-color") || !$stdout.tty? || !Vagrant::Util::Platform.terminal_supports_colors?
+  # Delete the argument from the list so that it doesn't cause any
+  # invalid arguments down the road.
+  ARGV.delete("--no-color")
+  opts[:ui_class] = Vagrant::UI::Basic
+else
+  opts[:ui_class] = Vagrant::UI::Colored
+end
+
+env = nil
+begin
+  # Create the environment, which is the cwd of wherever the
+  # `vagrant` command was invoked from
+  logger.debug("Creating Vagrant environment")
+  env = Vagrant::Environment.new(opts)
+
+  # Load the environment
+  logger.debug("Loading environment")
+  env.load!
+
+  # Execute the CLI interface, and exit with the proper error code
+  exit(env.cli(ARGV))
+rescue Vagrant::Errors::VagrantError => e
+  logger.error("Vagrant experienced an error! Details:")
+  logger.error(e.inspect)
+  logger.error(e.message)
+  logger.error(e.backtrace.join("\n"))
+
+  if env
+    opts = { :prefix => false }
+    env.ui.error e.message, opts if e.message
+  else
+    $stderr.puts "Vagrant failed to initialize at a very early stage:\n\n"
+    $stderr.puts e.message
+  end
+
+  exit e.status_code if e.respond_to?(:status_code)
+  exit 999 # An error occurred with no status code defined
+end

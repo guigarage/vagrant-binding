@@ -67,15 +67,12 @@ public class Vagrant {
 		
 		final VagrantVm vm = environment.getPrimaryVm();
 		System.out.println(vm.getName());
-		System.out.println(vm.getIpAdress());
 		System.out.println(vm.getUuid());
 		if(!vm.isRunning()) {
 			vm.up();
 		}
-		System.out.println(vm.getIpAdress());
 
 		vm.halt();
-		System.out.println(vm.getIpAdress());
 
 		VagrantSSHConnection connection = vm.createConnection();
 		System.out.println(connection.isReady());

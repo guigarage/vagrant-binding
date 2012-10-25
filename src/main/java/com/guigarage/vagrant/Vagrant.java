@@ -1,9 +1,11 @@
 package com.guigarage.vagrant;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.jruby.RubyObject;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.ScriptingContainer;
@@ -41,14 +43,20 @@ public class Vagrant {
 	}
 	
 	public VagrantEnvironment createEnvironment(File path) {
-		return null;
-		//TODO: Hier mal überlegen wie die API am besten wär
+		RubyObject vagrantEnv = (RubyObject) scriptingContainer.runScriptlet("require 'rubygems'\n"
+				+ "require 'vagrant'\n"
+				+ "\n" + "return Vagrant::Environment.new(:home_path => " + path.getAbsolutePath() + ")");
+		return new VagrantEnvironment(vagrantEnv);
 	}
-	
-	public VagrantEnvironment createEnvironment(File path, String vagrantfileName) {
-		return null;
-		//TODO: Hier mal überlegen wie die API am besten wär
-	}
+
+	public VagrantEnvironment createEnvironment(File path, String vagrantfileContent) throws IOException {
+		File vagrantFile = new File(path, "Vagrantfile");
+		if(!vagrantFile.exists()) {
+			vagrantFile.createNewFile();
+		}
+		FileUtils.writeStringToFile(vagrantFile, vagrantfileContent, false);
+		return createEnvironment(path);
+	}	
 	
 	public static void main(String[] args) throws Exception {
 		Vagrant vagrant = new Vagrant(true);

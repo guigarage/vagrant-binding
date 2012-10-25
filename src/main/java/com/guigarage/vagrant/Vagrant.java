@@ -24,7 +24,7 @@ public class Vagrant {
 		if(debug) {
 			debug();
 		}
-		scriptingContainer.runScriptlet("ENV['GEM_PATH']='/Users/hendrikebbers/Documents/workspace/vagrant-binding/jruby/'");
+		scriptingContainer.runScriptlet("ENV['GEM_PATH']='/Users/hendrikebbers/Documents/github-repositories/vagrant-binding/jruby/'");
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -45,7 +45,7 @@ public class Vagrant {
 	public VagrantEnvironment createEnvironment(File path) {
 		RubyObject vagrantEnv = (RubyObject) scriptingContainer.runScriptlet("require 'rubygems'\n"
 				+ "require 'vagrant'\n"
-				+ "\n" + "return Vagrant::Environment.new(:home_path => " + path.getAbsolutePath() + ")");
+				+ "\n" + "return Vagrant::Environment.new(:cwd => '" + path.getAbsolutePath() + "')");
 		return new VagrantEnvironment(vagrantEnv);
 	}
 
@@ -61,13 +61,22 @@ public class Vagrant {
 	public static void main(String[] args) throws Exception {
 		Vagrant vagrant = new Vagrant(true);
 		VagrantEnvironment environment =  vagrant.createEnvironment();
+		
+		//TODO: Wie kann ich rausfinden ob ich das tun muss?????
+//		environment.init("lucid64");
+		
 		final VagrantVm vm = environment.getPrimaryVm();
 		System.out.println(vm.getName());
+		System.out.println(vm.getIpAdress());
 		System.out.println(vm.getUuid());
 		if(!vm.isRunning()) {
 			vm.up();
 		}
+		System.out.println(vm.getIpAdress());
+
 		vm.halt();
+		System.out.println(vm.getIpAdress());
+
 		VagrantSSHConnection connection = vm.createConnection();
 		System.out.println(connection.isReady());
 		connection.execute("pwd", false);

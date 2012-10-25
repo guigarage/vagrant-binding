@@ -10,6 +10,8 @@ import org.jruby.RubyObject;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.ScriptingContainer;
 
+import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
+
 public class Vagrant {
 
 	private ScriptingContainer scriptingContainer;
@@ -47,6 +49,11 @@ public class Vagrant {
 				+ "require 'vagrant'\n"
 				+ "\n" + "return Vagrant::Environment.new(:cwd => '" + path.getAbsolutePath() + "')");
 		return new VagrantEnvironment(vagrantEnv);
+	}
+	
+	public VagrantEnvironment createEnvironment(File path, VagrantEnvironmentConfig config) {
+		//TODO: Hier fehlt noch was...
+		return null;
 	}
 
 	public VagrantEnvironment createEnvironment(File path, String vagrantfileContent) throws IOException {

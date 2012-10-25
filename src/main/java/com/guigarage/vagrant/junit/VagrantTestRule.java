@@ -60,6 +60,10 @@ public class VagrantTestRule extends TestWatcher {
 		clean();
 	}
 
+	public VagrantEnvironment getEnvironment() {
+		return environment;
+	}
+	
 	private synchronized void clean() {
 		try {
 			FileUtils.forceDelete(vagrantDir);

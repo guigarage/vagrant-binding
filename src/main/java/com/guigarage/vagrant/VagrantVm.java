@@ -1,6 +1,5 @@
 package com.guigarage.vagrant;
 
-import org.jruby.RubyHash;
 import org.jruby.RubyObject;
 import org.jruby.RubySymbol;
 

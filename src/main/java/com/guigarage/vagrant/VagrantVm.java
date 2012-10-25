@@ -1,5 +1,6 @@
 package com.guigarage.vagrant;
 
+import org.jruby.RubyHash;
 import org.jruby.RubyObject;
 import org.jruby.RubySymbol;
 
@@ -84,5 +85,10 @@ public class VagrantVm {
 	
 	public String getUuid() {
 		return ((RubyObject) vagrantVm.callMethod("uuid")).toString();
+	}
+	
+	public String getIpAdress() {
+		RubyHash hash = (RubyHash) ((RubyObject) vagrantVm.callMethod("ssh")).callMethod("info");
+		return "";
 	}
 }

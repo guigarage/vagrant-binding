@@ -17,8 +17,15 @@ public class VagrantTestRule extends TestWatcher {
 
 	private File vagrantDir;
 	
-	public VagrantTestRule(File vagrantFileMaster) throws IOException {
-		this(FileUtils.readFileToString(vagrantFileMaster));
+	public VagrantTestRule(File vagrantFileMaster) {
+		try {
+			String vagrantFileContent = FileUtils.readFileToString(vagrantFileMaster);
+			File tmpDir = FileUtils.getTempDirectory();
+			vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());
+			init("Vagrantfile", vagrantFileContent);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public VagrantTestRule(String vagrantFileContent) {
@@ -27,7 +34,7 @@ public class VagrantTestRule extends TestWatcher {
 		init("Vagrantfile", vagrantFileContent);
 	}
 
-	private void init(String vagrantfileName, String vagrantfileContent) {
+	private synchronized void init(String vagrantfileName, String vagrantfileContent) {
 		File vagrantFile = new File(vagrantDir, vagrantfileName);
 		try {
 			FileUtils.writeStringToFile(vagrantFile, vagrantfileContent, false);
@@ -36,23 +43,24 @@ public class VagrantTestRule extends TestWatcher {
 		}
 		Vagrant vagrant = new Vagrant(true);
 		environment = vagrant.createEnvironment(vagrantDir);
+		System.out.println(environment.getHomePath());
 	}
 	
 	@Override
-	protected void starting(Description description) {
+	protected synchronized void starting(Description description) {
 		super.starting(description);
 		environment.destroy();
 		environment.up();
 	}
 
 	@Override
-	protected void finished(Description description) {
+	protected synchronized void finished(Description description) {
 		super.finished(description);
 		environment.destroy();
 		clean();
 	}
 
-	private void clean() {
+	private synchronized void clean() {
 		try {
 			FileUtils.forceDelete(vagrantDir);
 		} catch (Exception e) {

@@ -17,6 +17,10 @@ public class VagrantTestRule extends TestWatcher {
 
 	private File vagrantDir;
 	
+	public VagrantTestRule(File vagrantFileMaster) throws IOException {
+		this(FileUtils.readFileToString(vagrantFileMaster));
+	}
+	
 	public VagrantTestRule(String vagrantFileContent) {
 		File tmpDir = FileUtils.getTempDirectory();
 		vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());

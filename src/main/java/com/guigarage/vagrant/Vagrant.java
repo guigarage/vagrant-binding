@@ -14,10 +14,16 @@ import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
 import com.guigarage.vagrant.configuration.builder.VagrantEnvironmentConfigBuilder;
 import com.guigarage.vagrant.configuration.builder.VagrantVmConfigBuilder;
+import com.guigarage.vagrant.util.UrlLoader;
 
 public class Vagrant {
 
 	private ScriptingContainer scriptingContainer;
+	
+//	private final String pathToRuby = "com/guigarage/vagrant/jruby/";
+
+//	private final String pathToRuby = "/Users/hendrikebbers/Documents/github-repositories/vagrant-binding/src/main/resources/com/guigarage/vagrant/jruby/";
+
 	
 	public Vagrant() {
 		this(false);
@@ -29,7 +35,14 @@ public class Vagrant {
 		if(debug) {
 			debug();
 		}
-		scriptingContainer.runScriptlet("ENV['GEM_PATH']='/Users/hendrikebbers/Documents/github-repositories/vagrant-binding/jruby/'");
+//		try {
+//			System.out.println(UrlLoader.getInstance().load(pathToRuby));
+//			scriptingContainer.runScriptlet("$LOAD_PATH << '" + UrlLoader.getInstance().load(pathToRuby) + "'");
+//
+////			scriptingContainer.runScriptlet("ENV['GEM_PATH']='" + UrlLoader.getInstance().load(pathToRuby) + "'");
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

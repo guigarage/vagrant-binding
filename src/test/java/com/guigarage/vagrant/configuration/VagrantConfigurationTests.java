@@ -26,7 +26,7 @@ public class VagrantConfigurationTests {
 	@Test
 	public void testSimpleConfiguration() {
 		try {
-			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(null);
+			new VagrantEnvironmentConfig(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail("");
@@ -34,7 +34,7 @@ public class VagrantConfigurationTests {
 
 		try {
 			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<>();
-			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(
+			new VagrantEnvironmentConfig(
 					vmConfigs);
 		} catch (Exception e) {
 			e.printStackTrace();

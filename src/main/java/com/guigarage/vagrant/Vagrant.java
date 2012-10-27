@@ -66,12 +66,15 @@ public class Vagrant {
 		return createEnvironment(path);
 	}	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
+		try{
 		Vagrant vagrant = new Vagrant(true);
 		VagrantEnvironment environment =  vagrant.createEnvironment(new File("/Users/hendrikebbers/Desktop/vagrantTest"), new VagrantEnvironmentConfigBuilder().withVagrantVmConfig(new VagrantVmConfigBuilder().withName("testVm").withLucid32Box().withHostOnlyIp("192.168.50.4").create()).create());
 		
 		//TODO: Wie kann ich rausfinden ob ich das tun muss?????
 //		environment.init("lucid64");
+
+//		final VagrantVm vm = environment.getPrimaryVm();
 		
 		final VagrantVm vm = environment.getAllVms().iterator().next();
 		System.out.println(vm.getName());
@@ -85,6 +88,9 @@ public class Vagrant {
 //		VagrantSSHConnection connection = vm.createConnection();
 //		System.out.println(connection.isReady());
 //		connection.execute("pwd", false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

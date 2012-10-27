@@ -12,6 +12,7 @@ import com.guigarage.vagrant.Vagrant;
 import com.guigarage.vagrant.VagrantEnvironment;
 import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
+import com.guigarage.vagrant.util.VagrantException;
 
 public class VagrantTestRule extends TestWatcher {
 
@@ -33,7 +34,7 @@ public class VagrantTestRule extends TestWatcher {
 					+ UUID.randomUUID().toString());
 			init("Vagrantfile", vagrantFileContent);
 		} catch (IOException e) {
-			throw new RuntimeException("Can't create Vagrantfolder!", e);
+			throw new VagrantException("Can't create Vagrantfolder!", e);
 		}
 	}
 
@@ -49,7 +50,7 @@ public class VagrantTestRule extends TestWatcher {
 		try {
 			FileUtils.writeStringToFile(vagrantFile, vagrantfileContent, false);
 		} catch (IOException e) {
-			throw new RuntimeException("Error while creating "
+			throw new VagrantException("Error while creating "
 					+ this.getClass().getSimpleName(), e);
 		}
 		Vagrant vagrant = new Vagrant(true);
@@ -81,7 +82,7 @@ public class VagrantTestRule extends TestWatcher {
 			try {
 				FileUtils.forceDeleteOnExit(vagrantDir);
 			} catch (Exception e2) {
-				throw new RuntimeException("Can't clean Vagrantfolder", e2);
+				throw new VagrantException("Can't clean Vagrantfolder", e2);
 			}
 		}
 	}

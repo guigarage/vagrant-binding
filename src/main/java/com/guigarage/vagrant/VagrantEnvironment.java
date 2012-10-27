@@ -5,70 +5,134 @@ import java.util.ArrayList;
 
 import org.jruby.RubyArray;
 import org.jruby.RubyBoolean;
+import org.jruby.RubyNil;
 import org.jruby.RubyObject;
 import org.jruby.RubyString;
+import org.jruby.exceptions.RaiseException;
+
+import com.guigarage.vagrant.util.VagrantException;
 
 public class VagrantEnvironment {
 
 	private RubyObject vagrantEnvironment;
-	
+
 	public VagrantEnvironment(RubyObject vagrantEnvironment) {
 		this.vagrantEnvironment = vagrantEnvironment;
 	}
-	
+
 	public void up() {
-		vagrantEnvironment.callMethod("cli", RubyString.newString(vagrantEnvironment.getRuntime(), "up"));
+		try {
+			vagrantEnvironment
+					.callMethod(
+							"cli",
+							RubyString.newString(
+									vagrantEnvironment.getRuntime(), "up"));
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
 
 	public void addBox(String boxName, URL boxUrl) {
-		vagrantEnvironment.callMethod("cli", RubyString.newString(vagrantEnvironment.getRuntime(), "add"), RubyString.newString(vagrantEnvironment.getRuntime(), boxName), RubyString.newString(vagrantEnvironment.getRuntime(), boxUrl.toString()));
+		try {
+			vagrantEnvironment.callMethod("cli", RubyString.newString(
+					vagrantEnvironment.getRuntime(), "add"), RubyString
+					.newString(vagrantEnvironment.getRuntime(), boxName),
+					RubyString.newString(vagrantEnvironment.getRuntime(),
+							boxUrl.toString()));
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
-	
+
 	public void init(String boxName) {
-		vagrantEnvironment.callMethod("cli", RubyString.newString(vagrantEnvironment.getRuntime(), "init"), RubyString.newString(vagrantEnvironment.getRuntime(), boxName));
+		try {
+			vagrantEnvironment.callMethod("cli", RubyString.newString(
+					vagrantEnvironment.getRuntime(), "init"), RubyString
+					.newString(vagrantEnvironment.getRuntime(), boxName));
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
-	
+
 	public boolean isMultiVmEnvironment() {
-		return ((RubyBoolean) vagrantEnvironment.callMethod("multivm?")).isTrue();
+		try {
+			return ((RubyBoolean) vagrantEnvironment.callMethod("multivm?"))
+					.isTrue();
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
-	
+
 	public String getRootPath() {
-		return ((RubyObject) vagrantEnvironment.callMethod("root_path")).toString();
+		try {
+			return ((RubyObject) vagrantEnvironment.callMethod("root_path"))
+					.toString();
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
-	
+
 	public Iterable<String> getAllAvailableBoxes() {
-		RubyArray boxes = (RubyArray) ((RubyObject) vagrantEnvironment.callMethod("boxes")).getInternalVariable("@boxes");
-		ArrayList<String> ret = new ArrayList<>();
-		for(Object box : boxes) {
-			ret.add(((RubyObject) box).callMethod("name").toString());
+		try {
+			RubyArray boxes = (RubyArray) ((RubyObject) vagrantEnvironment
+					.callMethod("boxes")).getInternalVariable("@boxes");
+			ArrayList<String> ret = new ArrayList<>();
+			for (Object box : boxes) {
+				ret.add(((RubyObject) box).callMethod("name").toString());
+			}
+			return ret;
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
 		}
-		return ret;
 	}
-	
+
 	public Iterable<VagrantVm> getAllVms() {
-		RubyArray o = (RubyArray) vagrantEnvironment.callMethod("vms_ordered");
-		ArrayList<VagrantVm> vms = new ArrayList<>();
-		for(Object vm : o) {
-			vms.add(new VagrantVm((RubyObject) vm));
+		try {
+			RubyArray o = (RubyArray) vagrantEnvironment
+					.callMethod("vms_ordered");
+			ArrayList<VagrantVm> vms = new ArrayList<>();
+			for (Object vm : o) {
+				vms.add(new VagrantVm((RubyObject) vm));
+			}
+			return vms;
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
 		}
-		return vms;
 	}
-	
+
 	public String getVagrantfileName() {
-		return ((RubyObject) vagrantEnvironment.callMethod("vagrantfile_name")).toString();
+		try {
+			return ((RubyObject) vagrantEnvironment
+					.callMethod("vagrantfile_name")).toString();
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
-	
+
 	public String getHomePath() {
-		return ((RubyObject) vagrantEnvironment.callMethod("home_path")).toString();
+		try {
+			return ((RubyObject) vagrantEnvironment.callMethod("home_path"))
+					.toString();
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
-	
+
 	public VagrantVm getPrimaryVm() {
-		return new VagrantVm((RubyObject) vagrantEnvironment.callMethod("primary_vm"));
+		try {
+			RubyObject rubyVm = (RubyObject) vagrantEnvironment.callMethod("primary_vm");
+			if(rubyVm == null || rubyVm instanceof RubyNil) {
+				throw new VagrantException("No primary vm found. Maybe there is no vm defined in your configuration or you are working with a multi vm environment.");
+			}
+			return new VagrantVm(rubyVm);
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
 	}
 
 	public void destroy() {
-		for(VagrantVm vm : getAllVms()) {
-			if(vm.isCreated()) {
+		for (VagrantVm vm : getAllVms()) {
+			if (vm.isCreated()) {
 				vm.destroy();
 			}
 		}

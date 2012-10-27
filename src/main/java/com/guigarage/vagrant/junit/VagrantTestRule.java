@@ -10,42 +10,52 @@ import org.junit.runner.Description;
 
 import com.guigarage.vagrant.Vagrant;
 import com.guigarage.vagrant.VagrantEnvironment;
+import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
+import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
 
 public class VagrantTestRule extends TestWatcher {
 
 	private VagrantEnvironment environment;
 
 	private File vagrantDir;
-	
+
+	public VagrantTestRule(VagrantEnvironmentConfig environmentConfig) {
+		this(VagrantConfigurationUtilities
+				.createVagrantFileContent(environmentConfig));
+	}
+
 	public VagrantTestRule(File vagrantFileMaster) {
 		try {
-			String vagrantFileContent = FileUtils.readFileToString(vagrantFileMaster);
+			String vagrantFileContent = FileUtils
+					.readFileToString(vagrantFileMaster);
 			File tmpDir = FileUtils.getTempDirectory();
-			vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());
+			vagrantDir = new File(tmpDir, "vagrant-"
+					+ UUID.randomUUID().toString());
 			init("Vagrantfile", vagrantFileContent);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Can't create Vagrantfolder!", e);
 		}
 	}
-	
+
 	public VagrantTestRule(String vagrantFileContent) {
 		File tmpDir = FileUtils.getTempDirectory();
 		vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());
 		init("Vagrantfile", vagrantFileContent);
 	}
 
-	private synchronized void init(String vagrantfileName, String vagrantfileContent) {
+	private synchronized void init(String vagrantfileName,
+			String vagrantfileContent) {
 		File vagrantFile = new File(vagrantDir, vagrantfileName);
 		try {
 			FileUtils.writeStringToFile(vagrantFile, vagrantfileContent, false);
 		} catch (IOException e) {
-			throw new RuntimeException("VagrantTestRule kann nicht erstellt werden!", e);
+			throw new RuntimeException("Error while creating "
+					+ this.getClass().getSimpleName(), e);
 		}
 		Vagrant vagrant = new Vagrant(true);
 		environment = vagrant.createEnvironment(vagrantDir);
-		System.out.println(environment.getHomePath());
 	}
-	
+
 	@Override
 	protected synchronized void starting(Description description) {
 		super.starting(description);
@@ -63,15 +73,15 @@ public class VagrantTestRule extends TestWatcher {
 	public VagrantEnvironment getEnvironment() {
 		return environment;
 	}
-	
+
 	private synchronized void clean() {
 		try {
 			FileUtils.forceDelete(vagrantDir);
 		} catch (Exception e) {
 			try {
-			FileUtils.forceDeleteOnExit(vagrantDir);
+				FileUtils.forceDeleteOnExit(vagrantDir);
 			} catch (Exception e2) {
-				//Nix geht mehr...
+				throw new RuntimeException("Can't clean Vagrantfolder", e2);
 			}
 		}
 	}

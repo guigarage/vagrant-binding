@@ -9,9 +9,20 @@ public class VagrantVmConfig {
 	
 	private PuppetProvisionerConfig puppetProvisionerConfig;
 	
-	public VagrantVmConfig() {
-		portForwardings = new ArrayList<>();
+	public VagrantVmConfig(Iterable<VagrantPortForwarding> portForwardings, PuppetProvisionerConfig puppetProvisionerConfig) {
+		this.portForwardings = new ArrayList<>();
+		for(VagrantPortForwarding portForwarding : portForwardings) {
+			this.portForwardings.add(portForwarding);
+		}
+		this.puppetProvisionerConfig = puppetProvisionerConfig;
 	}
 	
+	public PuppetProvisionerConfig getPuppetProvisionerConfig() {
+		return puppetProvisionerConfig;
+	}
+	
+	public Iterable<VagrantPortForwarding> getPortForwardings() {
+		return portForwardings;
+	}
 	
 }

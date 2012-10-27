@@ -12,13 +12,13 @@ public class VagrantVmConfig {
 	
 	private String name;
 	
-	private String host;
+	private String ip;
 
 	private String boxName;
 	
 	private URL boxUrl;
 
-	public VagrantVmConfig(String name, String host, String boxName, URL boxUrl, Iterable<VagrantPortForwarding> portForwardings, PuppetProvisionerConfig puppetProvisionerConfig) {
+	public VagrantVmConfig(String name, String ip, String boxName, URL boxUrl, Iterable<VagrantPortForwarding> portForwardings, PuppetProvisionerConfig puppetProvisionerConfig) {
 		this.portForwardings = new ArrayList<>();
 		if(portForwardings != null) {
 			for(VagrantPortForwarding portForwarding : portForwardings) {
@@ -26,7 +26,7 @@ public class VagrantVmConfig {
 			}
 		}
 		this.puppetProvisionerConfig = puppetProvisionerConfig;
-		this.host = host;
+		this.ip = ip;
 		this.name = name;
 		this.boxName = boxName;
 		this.boxUrl = boxUrl;
@@ -52,8 +52,8 @@ public class VagrantVmConfig {
 		return name;
 	}
 	
-	public String getHost() {
-		return host;
+	public String getIp() {
+		return ip;
 	}
 	
 }

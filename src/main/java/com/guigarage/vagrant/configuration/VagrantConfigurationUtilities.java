@@ -27,33 +27,47 @@ public class VagrantConfigurationUtilities {
 				String portForwardingName = portForwarding.getName();
 				if (portForwardingName != null) {
 					builder.append(
-							"config.vm.forward_port \""
+							vmName
+							+ "_config.vm.forward_port \""
 									+ portForwardingName + "\", "
 									+ portForwarding.getGuestport() + ", "
 									+ portForwarding.getHostport())
 							.append("\n");
 				} else {
 					builder.append(
-							"config.vm.forward_port "
+							vmName
+							+ "_config.vm.forward_port "
 									+ portForwarding.getGuestport() + ", "
 									+ portForwarding.getHostport())
 							.append("\n");
 				}
 			}
 			builder.append(
-					"db_config.vm.box = \"" + vmConfig.getBoxName() + "\"")
+					vmName
+					+ "_config.vm.box = \"" + vmConfig.getBoxName() + "\"")
 					.append("\n");
 
 			URL boxUrl = vmConfig.getBoxUrl();
 			if (boxUrl != null) {
 				builder.append(
-						"config.vm.box_url = \"" + boxUrl + "\"")
+						vmName
+						+ "_config.vm.box_url = \"" + boxUrl + "\"")
+						.append("\n");
+			}
+			
+			String ip = vmConfig.getIp();
+			if(ip != null) {
+//				config.vm.network :hostonly, "192.168.50.4"
+				builder.append(
+						vmName
+						+ "_config.vm.network :hostonly, \"" + ip + "\"")
 						.append("\n");
 			}
 
 			PuppetProvisionerConfig puppetProvisionerConfig = vmConfig.getPuppetProvisionerConfig();
 			if(puppetProvisionerConfig != null) {
-				builder.append("config.vm.provision :puppet do |puppet|").append("\n");
+				builder.append(vmName
+						+ "_config.vm.provision :puppet do |puppet|").append("\n");
 				builder.append("puppet.manifests_path = \"" + puppetProvisionerConfig.getManifestsPath() + "\"").append("\n");
 				builder.append("puppet.manifest_file  = \"" + puppetProvisionerConfig.getManifestFile() + "\"").append("\n");
 				builder.append("end").append("\n");

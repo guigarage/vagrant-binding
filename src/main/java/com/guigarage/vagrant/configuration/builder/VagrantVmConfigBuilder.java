@@ -1,5 +1,6 @@
 package com.guigarage.vagrant.configuration.builder;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ private List<VagrantPortForwarding> portForwardings;
 	
 	private String name;
 
-	private String host;
+	private String ip;
 	
 	private String boxName;
 	
@@ -41,8 +42,28 @@ private List<VagrantPortForwarding> portForwardings;
 		return this;
 	}
 	
-	public VagrantVmConfigBuilder withHost(String host) {
-		this.host = host;
+	public VagrantVmConfigBuilder withHostOnlyIp(String ip) {
+		this.ip = ip;
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withLucid32Box() {
+		this.boxName = "lucid32";
+		try {
+			this.boxUrl = new URL("http://files.vagrantup.com/lucid32.box");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withLucid64Box() {
+		this.boxName = "lucid64";
+		try {
+			this.boxUrl = new URL("http://files.vagrantup.com/lucid64.box");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 		return this;
 	}
 	
@@ -57,6 +78,6 @@ private List<VagrantPortForwarding> portForwardings;
 	}
 	
 	public VagrantVmConfig create() {
-		return new VagrantVmConfig(name, host, boxName, boxUrl, portForwardings, puppetProvisionerConfig);
+		return new VagrantVmConfig(name, ip, boxName, boxUrl, portForwardings, puppetProvisionerConfig);
 	}
 }

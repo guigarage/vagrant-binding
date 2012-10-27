@@ -1,4 +1,4 @@
-package com.guigarage.vagrant;
+package com.guigarage.vagrant.model;
 
 import org.jruby.RubyBoolean;
 import org.jruby.RubyNumeric;

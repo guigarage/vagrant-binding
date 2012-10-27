@@ -9,9 +9,9 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import com.guigarage.vagrant.Vagrant;
-import com.guigarage.vagrant.VagrantEnvironment;
 import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
+import com.guigarage.vagrant.model.VagrantEnvironment;
 import com.guigarage.vagrant.util.VagrantException;
 
 public class VagrantTestRule extends TestWatcher {

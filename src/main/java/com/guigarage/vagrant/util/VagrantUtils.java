@@ -1,4 +1,4 @@
-package com.guigarage.vagrant;
+package com.guigarage.vagrant.util;
 
 import java.io.File;
 

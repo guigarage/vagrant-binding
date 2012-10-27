@@ -1,4 +1,4 @@
-package com.guigarage.vagrant;
+package com.guigarage.vagrant.model;
 
 import java.net.URL;
 import java.util.ArrayList;

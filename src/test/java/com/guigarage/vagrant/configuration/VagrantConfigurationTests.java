@@ -10,8 +10,8 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.guigarage.vagrant.Vagrant;
-import com.guigarage.vagrant.VagrantEnvironment;
-import com.guigarage.vagrant.VagrantVm;
+import com.guigarage.vagrant.model.VagrantEnvironment;
+import com.guigarage.vagrant.model.VagrantVm;
 
 public class VagrantConfigurationTests {
 

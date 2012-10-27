@@ -3,7 +3,7 @@ package com.guigarage.vagrant.junit;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.guigarage.vagrant.VagrantUtils;
+import com.guigarage.vagrant.util.VagrantUtils;
 
 public class RuleTest {
 

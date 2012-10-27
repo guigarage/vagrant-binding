@@ -20,8 +20,10 @@ public class VagrantVmConfig {
 
 	public VagrantVmConfig(String name, String host, String boxName, URL boxUrl, Iterable<VagrantPortForwarding> portForwardings, PuppetProvisionerConfig puppetProvisionerConfig) {
 		this.portForwardings = new ArrayList<>();
-		for(VagrantPortForwarding portForwarding : portForwardings) {
-			this.portForwardings.add(portForwarding);
+		if(portForwardings != null) {
+			for(VagrantPortForwarding portForwarding : portForwardings) {
+				this.portForwardings.add(portForwarding);
+			}
 		}
 		this.puppetProvisionerConfig = puppetProvisionerConfig;
 		this.host = host;

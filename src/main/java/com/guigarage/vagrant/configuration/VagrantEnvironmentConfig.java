@@ -9,8 +9,10 @@ public class VagrantEnvironmentConfig {
 	
 	public VagrantEnvironmentConfig(Iterable<VagrantVmConfig> vmConfigs) {
 		this.vmConfigs = new ArrayList<>();
-		for(VagrantVmConfig vagrantVmConfig : vmConfigs) {
-			this.vmConfigs.add(vagrantVmConfig);
+		if(vmConfigs != null) {
+			for(VagrantVmConfig vagrantVmConfig : vmConfigs) {
+				this.vmConfigs.add(vagrantVmConfig);
+			}
 		}
 	}
 	

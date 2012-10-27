@@ -8,6 +8,8 @@ public class VagrantPortForwardingBuilder {
 
 	private int hostport;
 
+	private String name;
+	
 	public VagrantPortForwardingBuilder() {
 	}
 	
@@ -21,7 +23,12 @@ public class VagrantPortForwardingBuilder {
 		return this;
 	}
 	
+	public VagrantPortForwardingBuilder withName(String name) {
+		this.name = name;
+		return this;
+	}
+	
 	public VagrantPortForwarding create() {
-		return new VagrantPortForwarding(guestport, hostport);
+		return new VagrantPortForwarding(name, guestport, hostport);
 	}
 }

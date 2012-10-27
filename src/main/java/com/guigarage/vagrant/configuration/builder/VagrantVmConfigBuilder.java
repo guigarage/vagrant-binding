@@ -1,5 +1,6 @@
 package com.guigarage.vagrant.configuration.builder;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,14 @@ public class VagrantVmConfigBuilder {
 private List<VagrantPortForwarding> portForwardings;
 	
 	private PuppetProvisionerConfig puppetProvisionerConfig;
+	
+	private String name;
+
+	private String host;
+	
+	private String boxName;
+	
+	private URL boxUrl;
 	
 	public VagrantVmConfigBuilder() {
 		portForwardings = new ArrayList<>();
@@ -27,7 +36,27 @@ private List<VagrantPortForwarding> portForwardings;
 		return this;
 	}
 	
+	public VagrantVmConfigBuilder withName(String name) {
+		this.name = name;
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withHost(String host) {
+		this.host = host;
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withBoxName(String boxName) {
+		this.boxName = boxName;
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withBoxUrl(URL boxUrl) {
+		this.boxUrl = boxUrl;
+		return this;
+	}
+	
 	public VagrantVmConfig create() {
-		return new VagrantVmConfig(portForwardings, puppetProvisionerConfig);
+		return new VagrantVmConfig(name, host, boxName, boxUrl, portForwardings, puppetProvisionerConfig);
 	}
 }

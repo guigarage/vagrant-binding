@@ -19,4 +19,11 @@ public class VagrantEnvironmentConfig {
 	public Iterable<VagrantVmConfig> getVmConfigs() {
 		return vmConfigs;
 	}
+	
+	public boolean isMultiVmEnvironment() {
+		if(vmConfigs.size() > 1) {
+			return true;
+		}
+		return false;
+	}
 }

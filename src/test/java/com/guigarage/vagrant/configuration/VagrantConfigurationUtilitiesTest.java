@@ -36,7 +36,7 @@ public class VagrantConfigurationUtilitiesTest {
 					.createVagrantFileContent(config);
 			String expected = "Vagrant::Config.run do |config|" + "\n" +
 			"config.vm.define :unitTest do |unitTest_config|" + "\n" +
-			"db_config.vm.box = \"lucid32\""+ "\n" +
+			"unitTest_config.vm.box = \"lucid32\""+ "\n" +
 			"end"+ "\n" +
 			"end";
 			assertTrimEquals(expected, vagrantFileContent);

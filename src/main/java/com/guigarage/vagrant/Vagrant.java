@@ -75,7 +75,7 @@ public class Vagrant {
 //		environment.init("lucid64");
 
 //		final VagrantVm vm = environment.getPrimaryVm();
-		
+		System.out.println(environment.isMultiVmEnvironment());
 		final VagrantVm vm = environment.getAllVms().iterator().next();
 		System.out.println(vm.getName());
 		System.out.println(vm.getUuid());

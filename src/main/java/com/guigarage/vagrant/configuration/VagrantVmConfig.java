@@ -55,5 +55,4 @@ public class VagrantVmConfig {
 	public String getIp() {
 		return ip;
 	}
-	
 }

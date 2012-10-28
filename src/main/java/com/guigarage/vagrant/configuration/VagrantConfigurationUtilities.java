@@ -49,6 +49,16 @@ public class VagrantConfigurationUtilities {
 			builder.append(createHostOnlyIpConfig(vmName + "_config", ip));
 		}
 
+		boolean guiMode = vmConfig.isGuiMode();
+		if(guiMode) {
+			builder.append(createGuiModeConfig(vmName + "_config"));
+		}
+		
+		String hostName = vmConfig.getHostName();
+		if(hostName != null) {
+			builder.append(createHostNameConfig(vmName + "_config", hostName));
+		}
+		
 		PuppetProvisionerConfig puppetProvisionerConfig = vmConfig
 				.getPuppetProvisionerConfig();
 		if (puppetProvisionerConfig != null) {
@@ -87,6 +97,17 @@ public class VagrantConfigurationUtilities {
 		return builder.toString();
 	}
 	
+	private static String createHostNameConfig(String vmConfigName, String hostName) {
+		StringBuilder builder = new StringBuilder();
+		if (hostName != null) {
+			builder.append(
+					vmConfigName + ".vm.host_name = \"" + hostName + ".local\"")
+					.append("\n");
+		}
+		return builder.toString();
+	}
+	
+	
 	private static String createBoxUrlConfig(String vmConfigName, URL boxUrl) {
 		StringBuilder builder = new StringBuilder();
 		if (boxUrl != null) {
@@ -106,6 +127,14 @@ public class VagrantConfigurationUtilities {
 		}
 		return builder.toString();
 	}
+	
+	private static String createGuiModeConfig(String vmConfigName) {
+		StringBuilder builder = new StringBuilder();
+			builder.append(
+					vmConfigName + ".vm.boot_mode = :gui")
+					.append("\n");
+		return builder.toString();
+	}
 
 	private static String createPuppetProvisionerConfig(String vmConfigName,
 			PuppetProvisionerConfig puppetProvisionerConfig) {
@@ -121,6 +150,22 @@ public class VagrantConfigurationUtilities {
 					"puppet.manifest_file  = \""
 							+ puppetProvisionerConfig.getManifestFile() + "\"")
 					.append("\n");
+			
+			String modulesPath = puppetProvisionerConfig.getModulesPath();
+			if(modulesPath != null) {
+				builder.append(
+						"puppet.module_path  = \""
+								+ modulesPath + "\"")
+						.append("\n");
+			}
+			
+			boolean debug = puppetProvisionerConfig.isDebug();
+			if(debug) {
+				builder.append(
+						"puppet.options  = \"--verbose --debug\"")
+						.append("\n");
+			}
+			
 			builder.append("end").append("\n");
 		}
 		return builder.toString();

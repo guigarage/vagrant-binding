@@ -23,6 +23,10 @@ private List<VagrantPortForwarding> portForwardings;
 	
 	private URL boxUrl;
 	
+	private String hostName;
+	
+	private boolean guiMode;
+	
 	public VagrantVmConfigBuilder() {
 		portForwardings = new ArrayList<>();
 	}
@@ -34,6 +38,16 @@ private List<VagrantPortForwarding> portForwardings;
 	
 	public VagrantVmConfigBuilder withVagrantPortForwarding(VagrantPortForwarding portForwarding) {
 		this.portForwardings.add(portForwarding);
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withHostName(String hostName) {
+		this.hostName = hostName;
+		return this;
+	}
+	
+	public VagrantVmConfigBuilder withGuiMode(boolean guiMode) {
+		this.guiMode = guiMode;
 		return this;
 	}
 	
@@ -78,6 +92,6 @@ private List<VagrantPortForwarding> portForwardings;
 	}
 	
 	public VagrantVmConfig create() {
-		return new VagrantVmConfig(name, ip, boxName, boxUrl, portForwardings, puppetProvisionerConfig);
+		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, portForwardings, puppetProvisionerConfig, guiMode);
 	}
 }

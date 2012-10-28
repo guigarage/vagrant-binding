@@ -5,7 +5,13 @@ import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
 public class PuppetProvisionerConfigBuilder {
 
 	private String manifestPath;
+	
 	private String manifestFile;
+	
+	private boolean debug;
+	
+	private String modulesPath;
+	
 	
 	public PuppetProvisionerConfigBuilder() {
 	}
@@ -20,7 +26,17 @@ public class PuppetProvisionerConfigBuilder {
 		return this;
 	}
 	
+	public PuppetProvisionerConfigBuilder withModulesPath(String modulesPath) {
+		this.modulesPath = modulesPath;
+		return this;
+	}
+	
+	public PuppetProvisionerConfigBuilder withDebug(boolean debug) {
+		this.debug = debug;
+		return this;
+	}
+	
 	public PuppetProvisionerConfig create() {
-		return new PuppetProvisionerConfig(manifestPath, manifestFile);
+		return new PuppetProvisionerConfig(debug, manifestPath, manifestFile, modulesPath);
 	}
 }

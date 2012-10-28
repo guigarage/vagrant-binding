@@ -10,8 +10,10 @@ import org.jruby.RubyObject;
 import org.jruby.embed.LocalContextScope;
 import org.jruby.embed.ScriptingContainer;
 
+import com.guigarage.vagrant.configuration.VagrantConfiguration;
 import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
+import com.guigarage.vagrant.configuration.VagrantFileTemplateConfiguration;
 import com.guigarage.vagrant.model.VagrantEnvironment;
 
 public class Vagrant {
@@ -53,15 +55,29 @@ public class Vagrant {
 	}
 	
 	public VagrantEnvironment createEnvironment(File path, VagrantEnvironmentConfig environmentConfig) throws IOException {
-		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig));
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), null);
 	}
 	
-	public VagrantEnvironment createEnvironment(File path, String vagrantfileContent) throws IOException {
+	public VagrantEnvironment createEnvironment(File path, VagrantEnvironmentConfig environmentConfig, Iterable<VagrantFileTemplateConfiguration> fileTemplates) throws IOException {
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), fileTemplates);
+	}
+	
+	public VagrantEnvironment createEnvironment(File path, VagrantConfiguration configuration) throws IOException {
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(configuration.getEnvironmentConfig()), configuration.getFileTemplateConfigurations());
+	}
+	
+	public VagrantEnvironment createEnvironment(File path, String vagrantfileContent, Iterable<VagrantFileTemplateConfiguration> fileTemplates) throws IOException {
+		path.mkdirs();
 		File vagrantFile = new File(path, "Vagrantfile");
 		if(!vagrantFile.exists()) {
 			vagrantFile.createNewFile();
 		}
 		FileUtils.writeStringToFile(vagrantFile, vagrantfileContent, false);
+		if(fileTemplates != null) {
+			for(VagrantFileTemplateConfiguration fileTemplate : fileTemplates) {
+				FileUtils.copyFile(fileTemplate.getLocalFile(), new File(path, fileTemplate.getPathInVagrantFolder()));
+			}
+		}
 		return createEnvironment(path);
 	}	
 }

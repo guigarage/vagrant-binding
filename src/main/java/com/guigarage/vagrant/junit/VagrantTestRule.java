@@ -9,8 +9,10 @@ import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
 import com.guigarage.vagrant.Vagrant;
+import com.guigarage.vagrant.configuration.VagrantConfiguration;
 import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
+import com.guigarage.vagrant.configuration.VagrantFileTemplateConfiguration;
 import com.guigarage.vagrant.model.VagrantEnvironment;
 import com.guigarage.vagrant.util.VagrantException;
 
@@ -27,11 +29,13 @@ public class VagrantTestRule extends TestWatcher {
 
 	public VagrantTestRule(File vagrantFileMaster) {
 		try {
-			String vagrantFileContent = FileUtils
-					.readFileToString(vagrantFileMaster);
 			File tmpDir = FileUtils.getTempDirectory();
 			vagrantDir = new File(tmpDir, "vagrant-"
 					+ UUID.randomUUID().toString());
+			
+			String vagrantFileContent = FileUtils
+					.readFileToString(vagrantFileMaster);
+			
 			init("Vagrantfile", vagrantFileContent);
 		} catch (IOException e) {
 			throw new VagrantException("Can't create Vagrantfolder!", e);
@@ -41,9 +45,29 @@ public class VagrantTestRule extends TestWatcher {
 	public VagrantTestRule(String vagrantFileContent) {
 		File tmpDir = FileUtils.getTempDirectory();
 		vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());
+		
 		init("Vagrantfile", vagrantFileContent);
 	}
 
+	public VagrantTestRule(VagrantConfiguration configuration) {
+		try {
+		File tmpDir = FileUtils.getTempDirectory();
+		vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());
+		
+		
+		if(configuration.getFileTemplateConfigurations() != null) {
+			for(VagrantFileTemplateConfiguration fileTemplate : configuration.getFileTemplateConfigurations()) {
+				FileUtils.copyFile(fileTemplate.getLocalFile(), new File(vagrantDir, fileTemplate.getPathInVagrantFolder()));
+			}
+		}
+		
+		init("Vagrantfile", VagrantConfigurationUtilities
+				.createVagrantFileContent(configuration.getEnvironmentConfig()));
+		} catch (Exception e) {
+			throw new VagrantException(e);
+		}
+	}
+	
 	private synchronized void init(String vagrantfileName,
 			String vagrantfileContent) {
 		File vagrantFile = new File(vagrantDir, vagrantfileName);

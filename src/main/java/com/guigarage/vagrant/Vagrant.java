@@ -12,10 +12,7 @@ import org.jruby.embed.ScriptingContainer;
 
 import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
-import com.guigarage.vagrant.configuration.builder.VagrantEnvironmentConfigBuilder;
-import com.guigarage.vagrant.configuration.builder.VagrantVmConfigBuilder;
 import com.guigarage.vagrant.model.VagrantEnvironment;
-import com.guigarage.vagrant.model.VagrantVm;
 
 public class Vagrant {
 

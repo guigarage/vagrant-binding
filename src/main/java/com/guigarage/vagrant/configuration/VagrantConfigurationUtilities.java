@@ -19,6 +19,7 @@ public class VagrantConfigurationUtilities {
 			builder.append(createVmInMultiEnvConfig(vmConfig));
 		}
 		builder.append("end").append("\n");
+		System.out.println(builder.toString());
 		return builder.toString();
 	}
 
@@ -45,7 +46,7 @@ public class VagrantConfigurationUtilities {
 
 		String ip = vmConfig.getIp();
 		if (ip != null) {
-			createHostOnlyIpConfig(vmName + "_config", ip);
+			builder.append(createHostOnlyIpConfig(vmName + "_config", ip));
 		}
 
 		PuppetProvisionerConfig puppetProvisionerConfig = vmConfig

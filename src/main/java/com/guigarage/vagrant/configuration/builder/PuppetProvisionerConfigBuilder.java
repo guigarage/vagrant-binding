@@ -16,6 +16,10 @@ public class PuppetProvisionerConfigBuilder {
 	public PuppetProvisionerConfigBuilder() {
 	}
 	
+	public static PuppetProvisionerConfigBuilder create() {
+		return new PuppetProvisionerConfigBuilder();
+	}
+	
 	public PuppetProvisionerConfigBuilder withManifestFile(String manifestFile) {
 		this.manifestFile = manifestFile;
 		return this;
@@ -36,7 +40,7 @@ public class PuppetProvisionerConfigBuilder {
 		return this;
 	}
 	
-	public PuppetProvisionerConfig create() {
+	public PuppetProvisionerConfig build() {
 		return new PuppetProvisionerConfig(debug, manifestPath, manifestFile, modulesPath);
 	}
 }

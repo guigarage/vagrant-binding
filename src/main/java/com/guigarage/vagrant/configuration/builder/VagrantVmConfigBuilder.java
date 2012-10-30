@@ -31,6 +31,10 @@ private List<VagrantPortForwarding> portForwardings;
 		portForwardings = new ArrayList<>();
 	}
 	
+	public static VagrantVmConfigBuilder create() {
+		return new VagrantVmConfigBuilder();
+	}
+	
 	public VagrantVmConfigBuilder withPuppetProvisionerConfig(PuppetProvisionerConfig puppetProvisionerConfig) {
 		this.puppetProvisionerConfig = puppetProvisionerConfig;
 		return this;
@@ -91,7 +95,7 @@ private List<VagrantPortForwarding> portForwardings;
 		return this;
 	}
 	
-	public VagrantVmConfig create() {
+	public VagrantVmConfig build() {
 		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, portForwardings, puppetProvisionerConfig, guiMode);
 	}
 }

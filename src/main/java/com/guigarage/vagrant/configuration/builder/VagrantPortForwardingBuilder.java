@@ -13,6 +13,10 @@ public class VagrantPortForwardingBuilder {
 	public VagrantPortForwardingBuilder() {
 	}
 	
+	public static VagrantPortForwardingBuilder create() {
+		return new VagrantPortForwardingBuilder();
+	}
+	
 	public VagrantPortForwardingBuilder withHostPort(int hostport) {
 		this.hostport = hostport;
 		return this;
@@ -28,7 +32,7 @@ public class VagrantPortForwardingBuilder {
 		return this;
 	}
 	
-	public VagrantPortForwarding create() {
+	public VagrantPortForwarding build() {
 		return new VagrantPortForwarding(name, guestport, hostport);
 	}
 }

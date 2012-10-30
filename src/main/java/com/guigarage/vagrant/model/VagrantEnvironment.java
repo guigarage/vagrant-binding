@@ -44,6 +44,30 @@ public class VagrantEnvironment {
 		}
 	}
 
+	public void removeBox(String boxName) {
+		try {
+			RubyArray boxes = (RubyArray) ((RubyObject) vagrantEnvironment
+					.callMethod("boxes")).getInternalVariable("@boxes");
+			for (Object box : boxes) {
+				String name = ((RubyObject) box).callMethod("name").toString();
+				if(name.equals(boxName)) {
+					((RubyObject) box).callMethod("destroy");
+				}
+			}
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
+	}
+	
+	public String getBoxesPath() {
+		try {
+			return ((RubyObject) vagrantEnvironment.callMethod("boxes_path"))
+					.toString();
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
+	}
+	
 	public void init(String boxName) {
 		try {
 			vagrantEnvironment.callMethod("cli", RubyString.newString(

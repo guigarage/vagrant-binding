@@ -13,6 +13,10 @@ public class VagrantFileTemplateConfigurationBuilder {
 	public VagrantFileTemplateConfigurationBuilder() {
 	}
 
+	public static VagrantFileTemplateConfigurationBuilder create() {
+		return new VagrantFileTemplateConfigurationBuilder();
+	}
+	
 	public VagrantFileTemplateConfigurationBuilder withLocalFile(File localFile) {
 		this.localFile = localFile;
 		return this;
@@ -23,7 +27,7 @@ public class VagrantFileTemplateConfigurationBuilder {
 		return this;
 	}
 	
-	public VagrantFileTemplateConfiguration create() {
+	public VagrantFileTemplateConfiguration build() {
 		return new VagrantFileTemplateConfiguration(localFile,
 				pathInVagrantFolder);
 	}

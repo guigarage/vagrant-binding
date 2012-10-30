@@ -14,13 +14,17 @@ public class VagrantEnvironmentConfigBuilder {
 		vmConfigs = new ArrayList<>();
 	}
 
+	public static VagrantEnvironmentConfigBuilder create() {
+		return new VagrantEnvironmentConfigBuilder();
+	}
+	
 	public VagrantEnvironmentConfigBuilder withVagrantVmConfig(
 			VagrantVmConfig vmConfig) {
 		this.vmConfigs.add(vmConfig);
 		return this;
 	}
 
-	public VagrantEnvironmentConfig create() {
+	public VagrantEnvironmentConfig build() {
 		return new VagrantEnvironmentConfig(vmConfigs);
 	}
 }

@@ -1,6 +1,7 @@
 package com.guigarage.vagrant.util;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
@@ -49,6 +50,22 @@ public class VagrantUtils {
 			return IOUtils.toString(fileUrl);
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
+		}
+	}
+	
+	public URL getLucid32Url() {
+		try {
+			return new URL("http://files.vagrantup.com/lucid32.box");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public URL getLucid64Url() {
+		try {
+			return new URL("http://files.vagrantup.com/lucid64.box");
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

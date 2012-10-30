@@ -17,6 +17,10 @@ public class VagrantConfigurationBuilder {
 		fileTemplateConfigurations = new ArrayList<>();
 	}
 	
+	public static VagrantConfigurationBuilder create() {
+		return new VagrantConfigurationBuilder();
+	}
+	
 	public VagrantConfigurationBuilder withVagrantEnvironmentConfig(VagrantEnvironmentConfig environmentConfig) {
 		this.environmentConfig = environmentConfig;
 		return this;
@@ -27,7 +31,7 @@ public class VagrantConfigurationBuilder {
 		return this;
 	}
 	
-	public VagrantConfiguration create() {
+	public VagrantConfiguration build() {
 		return new VagrantConfiguration(environmentConfig,
 				fileTemplateConfigurations);
 	}

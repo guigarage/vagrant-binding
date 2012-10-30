@@ -10,18 +10,11 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.guigarage.vagrant.Vagrant;
+import com.guigarage.vagrant.VagrantTestUtils;
 import com.guigarage.vagrant.model.VagrantEnvironment;
 import com.guigarage.vagrant.model.VagrantVm;
 
 public class VagrantConfigurationTests {
-
-	private File createTempDir() {
-		File mainTempDir = FileUtils.getTempDirectory();
-		File tempDir = new File(mainTempDir, "vagrant-"
-				+ UUID.randomUUID().toString());
-		tempDir.mkdirs();
-		return tempDir;
-	}
 	
 	@Test
 	public void testSimpleConfiguration() {
@@ -47,7 +40,7 @@ public class VagrantConfigurationTests {
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(
 					vmConfigs);
 			Vagrant vagrant = new Vagrant(true);
-			File tempDir = createTempDir();
+			File tempDir = VagrantTestUtils.createTempDir();
 			VagrantEnvironment env = vagrant.createEnvironment(tempDir, config);
 			VagrantVm vm = env.getAllVms().iterator().next();
 			Assert.assertEquals("unitTestVm", vm.getName());

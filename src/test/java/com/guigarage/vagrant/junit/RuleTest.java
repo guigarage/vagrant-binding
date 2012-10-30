@@ -8,7 +8,7 @@ import com.guigarage.vagrant.util.VagrantUtils;
 public class RuleTest {
 
 	@Rule
-	public VagrantTestRule testRule = new VagrantTestRule(VagrantUtils.getLucid32Master());
+	public VagrantTestRule testRule = new VagrantTestRule(VagrantUtils.getInstance().getLucid32MasterContent());
 	
 	@Test
 	public void testDummy() {

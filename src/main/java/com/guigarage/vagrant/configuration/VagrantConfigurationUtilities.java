@@ -19,7 +19,6 @@ public class VagrantConfigurationUtilities {
 			builder.append(createVmInMultiEnvConfig(vmConfig));
 		}
 		builder.append("end").append("\n");
-		System.out.println(builder.toString());
 		return builder.toString();
 	}
 

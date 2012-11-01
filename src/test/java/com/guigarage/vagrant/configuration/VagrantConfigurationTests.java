@@ -2,11 +2,9 @@ package com.guigarage.vagrant.configuration;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.UUID;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
 import com.guigarage.vagrant.Vagrant;

@@ -8,6 +8,7 @@ import java.util.List;
 import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
 import com.guigarage.vagrant.configuration.VagrantPortForwarding;
 import com.guigarage.vagrant.configuration.VagrantVmConfig;
+import com.guigarage.vagrant.configuration.builder.util.VagrantBuilderException;
 
 public class VagrantVmConfigBuilder {
 
@@ -96,6 +97,9 @@ private List<VagrantPortForwarding> portForwardings;
 	}
 	
 	public VagrantVmConfig build() {
+		if(boxName == null) {
+			throw new VagrantBuilderException("No boxName defined");
+		}
 		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, portForwardings, puppetProvisionerConfig, guiMode);
 	}
 }

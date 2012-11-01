@@ -14,7 +14,7 @@ public class MasterFetchTests {
 			Assert.assertEquals(true, content.length() > 0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 		
 		try {
@@ -23,7 +23,7 @@ public class MasterFetchTests {
 			Assert.assertEquals(true, content.length() > 0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 	}
 }

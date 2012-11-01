@@ -57,7 +57,12 @@ public class VagrantTestRule extends TestWatcher {
 		
 		if(configuration.getFileTemplateConfigurations() != null) {
 			for(VagrantFileTemplateConfiguration fileTemplate : configuration.getFileTemplateConfigurations()) {
-				FileUtils.copyFile(fileTemplate.getLocalFile(), new File(vagrantDir, fileTemplate.getPathInVagrantFolder()));
+				File fileInVagrantFolder = new File(vagrantDir, fileTemplate.getPathInVagrantFolder());
+				if(fileTemplate.useLocalFile()) {
+					FileUtils.copyFile(fileTemplate.getLocalFile(), fileInVagrantFolder);
+				} else {
+					FileUtils.copyURLToFile(fileTemplate.getUrlTemplate(), fileInVagrantFolder);
+				}
 			}
 		}
 		

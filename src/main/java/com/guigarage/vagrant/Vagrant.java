@@ -75,7 +75,12 @@ public class Vagrant {
 		FileUtils.writeStringToFile(vagrantFile, vagrantfileContent, false);
 		if(fileTemplates != null) {
 			for(VagrantFileTemplateConfiguration fileTemplate : fileTemplates) {
-				FileUtils.copyFile(fileTemplate.getLocalFile(), new File(path, fileTemplate.getPathInVagrantFolder()));
+				File fileInVagrantFolder = new File(path, fileTemplate.getPathInVagrantFolder());
+				if(fileTemplate.useLocalFile()) {
+					FileUtils.copyFile(fileTemplate.getLocalFile(), fileInVagrantFolder);
+				} else {
+					FileUtils.copyURLToFile(fileTemplate.getUrlTemplate(), fileInVagrantFolder);
+				}
 			}
 		}
 		return createEnvironment(path);

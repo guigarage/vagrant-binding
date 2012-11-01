@@ -20,7 +20,7 @@ public class VagrantUtils {
 		return instance;
 	}
 
-	private URL load(String path) throws IOException {
+	public URL load(String path) throws IOException {
 		URL url = ClassLoader.getSystemClassLoader().getResource(path);
 		if (url == null) {
 			// For use in JAR

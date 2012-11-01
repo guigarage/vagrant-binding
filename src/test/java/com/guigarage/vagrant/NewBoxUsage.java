@@ -37,7 +37,7 @@ public class NewBoxUsage {
 			environment.up();
 		} catch (Exception exception) {
 			exception.printStackTrace();
-			Assert.fail();
+			Assert.fail(exception.getMessage());
 		} finally {
 			if(environment != null) {
 				try {

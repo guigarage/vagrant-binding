@@ -42,7 +42,7 @@ public class VagrantSSHTests {
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
-			Assert.fail();
+			Assert.fail(exception.getMessage());
 		} finally {
 			try {
 				FileUtils.forceDelete(vagrantTempDir);
@@ -100,7 +100,7 @@ public class VagrantSSHTests {
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
-			Assert.fail();
+			Assert.fail(exception.getMessage());
 		} finally {
 			try {
 				FileUtils.forceDelete(vagrantTempDir);

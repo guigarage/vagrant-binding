@@ -6,6 +6,7 @@ import java.util.List;
 import com.guigarage.vagrant.configuration.VagrantConfiguration;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
 import com.guigarage.vagrant.configuration.VagrantFileTemplateConfiguration;
+import com.guigarage.vagrant.configuration.builder.util.VagrantBuilderException;
 
 public class VagrantConfigurationBuilder {
 
@@ -32,6 +33,9 @@ public class VagrantConfigurationBuilder {
 	}
 	
 	public VagrantConfiguration build() {
+		if(environmentConfig == null) {
+			throw new VagrantBuilderException("No VagrantEnvironmentConfig defined");
+		}
 		return new VagrantConfiguration(environmentConfig,
 				fileTemplateConfigurations);
 	}

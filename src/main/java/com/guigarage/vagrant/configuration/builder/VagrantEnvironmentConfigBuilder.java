@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
 import com.guigarage.vagrant.configuration.VagrantVmConfig;
+import com.guigarage.vagrant.configuration.builder.util.VagrantBuilderException;
 
 public class VagrantEnvironmentConfigBuilder {
 
@@ -25,6 +26,9 @@ public class VagrantEnvironmentConfigBuilder {
 	}
 
 	public VagrantEnvironmentConfig build() {
+		if(vmConfigs.isEmpty()) {
+			throw new VagrantBuilderException("No vm defined");
+		}
 		return new VagrantEnvironmentConfig(vmConfigs);
 	}
 }

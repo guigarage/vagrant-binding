@@ -1,5 +1,7 @@
 package com.guigarage.vagrant.junit;
 
+import junit.framework.Assert;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -12,6 +14,11 @@ public class RuleTest {
 	
 	@Test
 	public void testDummy() {
-		System.out.println("Dummy-Test");
+		try {
+		Assert.assertEquals(true, testRule.getEnvironment().getAllVms().iterator().next().isRunning());
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			Assert.fail(exception.getMessage());
+		}
 	}
 }

@@ -25,7 +25,7 @@ public class VagrantConfigurationUtilitiesTest {
 			assertTrimEquals(expected, vagrantFileContent);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Assert.fail("");
+			Assert.fail(e.getMessage());
 		}
 		
 		try {
@@ -42,7 +42,7 @@ public class VagrantConfigurationUtilitiesTest {
 			assertTrimEquals(expected, vagrantFileContent);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Assert.fail("");
+			Assert.fail(e.getMessage());
 		}
 	}
 }

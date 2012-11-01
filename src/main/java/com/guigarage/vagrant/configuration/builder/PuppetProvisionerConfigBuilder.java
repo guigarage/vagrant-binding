@@ -1,6 +1,7 @@
 package com.guigarage.vagrant.configuration.builder;
 
 import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
+import com.guigarage.vagrant.configuration.builder.util.VagrantBuilderException;
 
 public class PuppetProvisionerConfigBuilder {
 
@@ -41,6 +42,12 @@ public class PuppetProvisionerConfigBuilder {
 	}
 	
 	public PuppetProvisionerConfig build() {
+		if(manifestPath == null) {
+			throw new VagrantBuilderException("no manifestPath defined!");
+		}
+		if(manifestFile == null) {
+			throw new VagrantBuilderException("no manifestFile defined!");
+		}
 		return new PuppetProvisionerConfig(debug, manifestPath, manifestFile, modulesPath);
 	}
 }

@@ -4,6 +4,8 @@ Vagrant-Binding
 This API is build on top of the OpenSource Tool <a title="Vagrant" href="http://vagrantup.com"><strong>Vagrant</strong></a>. Vagrant is a ruby based tool for virtual machine automation. With Vagrant you can set up complex virtual systems in only a few minutes. Every vm that is created with Vagrant based on a config-file that describes the configuration of the virtual machine and all installed software on it. You can configure a Ubuntu 64 bit vm with a running MySql server for example. With Vagrant-Binding you can put the automation on the next level.
 Vagrant-Binding is OpenSource. It offers some nice builder APIs so that you can programmatically set up your vm. In addition to this Vagrant-Bindings gives you the opportunity to sync the lifecycle of your virtual machines with your JUnit Unit Tests. All you need is a <a title="VirtualBox" href="https://www.virtualbox.org">VirtualBox</a> installation on your system.
 <h2>Getting started</h2>
+I'm working on some samples for the use with Vagrant-Binding. You can find the project [here](https://github.com/guigarage/vagrant-binding-demos).
+
 The simplest way to start building your virtual machines in Java is the Builder-API. With a few Builder-Classes you can set up a complete environment of different virtual machines at runtime. To run all the example you need a VirtualBox installation on your system. I suggest you to use version 4.1.16 because this is the version I am currently using. I Don't know if every version is working fine with Vagrant. The actual "Vagrant-Binding" snapshot bundles Vagrant version 1.0.5. So you don't need a additional Vagrant installation on your system.
 
 Here is a short example that creates an Ubuntu 32bit vm:

@@ -124,6 +124,26 @@ public class VagrantEnvironment {
 		}
 	}
 
+	public VagrantVm getVm(int index) {
+		try {
+			RubyArray o = (RubyArray) vagrantEnvironment
+					.callMethod("vms_ordered");
+			return new VagrantVm((RubyObject) o.get(index));
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
+	}
+	
+	public int getVmCount() {
+		try {
+			RubyArray o = (RubyArray) vagrantEnvironment
+					.callMethod("vms_ordered");
+			return o.size();
+		} catch (RaiseException exception) {
+			throw new VagrantException(exception);
+		}
+	}
+	
 	public String getVagrantfileName() {
 		try {
 			return ((RubyObject) vagrantEnvironment

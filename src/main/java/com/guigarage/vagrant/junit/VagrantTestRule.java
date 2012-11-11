@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
 
@@ -16,32 +17,30 @@ import com.guigarage.vagrant.configuration.VagrantFileTemplateConfiguration;
 import com.guigarage.vagrant.model.VagrantEnvironment;
 import com.guigarage.vagrant.util.VagrantException;
 
+/**
+ * A JUnit Rule that can be used by the {@link Rule} annotation. The {@link VagrantTestRule} will create a Vagrant environment before every test and destroys it after the test.
+ * @author hendrikebbers
+ *
+ */
 public class VagrantTestRule extends TestWatcher {
 
 	private VagrantEnvironment environment;
 
 	private File vagrantDir;
 
+	/**
+	 * The VagrantTestRule will use the given {@link VagrantEnvironmentConfig} for the Vagrant environment that is wrapped around the tests.
+	 * @param environmentConfig the configuration for the Vagrant enviroment.
+	 */
 	public VagrantTestRule(VagrantEnvironmentConfig environmentConfig) {
 		this(VagrantConfigurationUtilities
 				.createVagrantFileContent(environmentConfig));
 	}
 
-	public VagrantTestRule(File vagrantFileMaster) {
-		try {
-			File tmpDir = FileUtils.getTempDirectory();
-			vagrantDir = new File(tmpDir, "vagrant-"
-					+ UUID.randomUUID().toString());
-			
-			String vagrantFileContent = FileUtils
-					.readFileToString(vagrantFileMaster);
-			
-			init("Vagrantfile", vagrantFileContent);
-		} catch (IOException e) {
-			throw new VagrantException("Can't create Vagrantfolder!", e);
-		}
-	}
-
+	/**
+	 * The VagrantTestRule will use the given vagrantfile for the Vagrant environment that is wrapped around the tests.
+	 * @param vagrantFileContent the content of the vagrantfile for the Vagrant enviroment.
+	 */
 	public VagrantTestRule(String vagrantFileContent) {
 		File tmpDir = FileUtils.getTempDirectory();
 		vagrantDir = new File(tmpDir, "vagrant-" + UUID.randomUUID().toString());
@@ -49,6 +48,10 @@ public class VagrantTestRule extends TestWatcher {
 		init("Vagrantfile", vagrantFileContent);
 	}
 
+	/**
+	 * The VagrantTestRule will use the given {@link VagrantConfiguration} for the Vagrant environment that is wrapped around the tests.
+	 * @param configuration the configuration for the Vagrant enviroment.
+	 */
 	public VagrantTestRule(VagrantConfiguration configuration) {
 		try {
 		File tmpDir = FileUtils.getTempDirectory();
@@ -100,6 +103,10 @@ public class VagrantTestRule extends TestWatcher {
 		clean();
 	}
 
+	/**
+	 * This gives you access to the VagrantEnvironment while the test is running. You can use it to execute some commands on the VMs etc.
+	 * @return the created VagrantEnvironment for the current unittest
+	 */
 	public VagrantEnvironment getEnvironment() {
 		return environment;
 	}

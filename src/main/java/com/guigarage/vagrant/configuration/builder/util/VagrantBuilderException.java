@@ -1,5 +1,10 @@
 package com.guigarage.vagrant.configuration.builder.util;
 
+/**
+ * The default Exception for all builder classes.
+ * @author hendrikebbers
+ *
+ */
 public class VagrantBuilderException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;

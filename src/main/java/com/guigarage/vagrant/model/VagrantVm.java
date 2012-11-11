@@ -6,14 +6,27 @@ import org.jruby.exceptions.RaiseException;
 
 import com.guigarage.vagrant.util.VagrantException;
 
+/**
+ * This class gives you acces to on VM. You can manage the lifecycle of this VM and acces the VM by SSH.
+ * 
+ * @author hendrikebbers
+ *
+ */
 public class VagrantVm {
 
 	private RubyObject vagrantVm;
 
+	/**
+	 * The {@link VagrantVm} is a wrapper for a Vagrant VM. The class contains the JRuby object for the connections and forwards the method calls to it. This constructor is used by the builder classes or the {@link VagrantEnvironment} class. You do not need to call it in your code
+	 * @param vagrantVm The Vagrant VM connection object
+	 */
 	public VagrantVm(RubyObject vagrantVm) {
 		this.vagrantVm = vagrantVm;
 	}
 
+	/**
+	 * Creates & starts the VM
+	 */
 	public void up() {
 		try {
 			vagrantVm.callMethod("up");
@@ -22,6 +35,9 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Starts the VM
+	 */
 	public void start() {
 		try {
 			vagrantVm.callMethod("start");
@@ -30,6 +46,9 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Halts the VM
+	 */
 	public void halt() {
 		try {
 			vagrantVm.callMethod("halt");
@@ -38,6 +57,9 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Reloades the VM
+	 */
 	public void reload() {
 		try {
 			vagrantVm.callMethod("reload");
@@ -46,6 +68,9 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Destroyes the VM
+	 */
 	public void destroy() {
 		try {
 			vagrantVm.callMethod("destroy");
@@ -54,6 +79,9 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Supsends the VM
+	 */
 	public void suspend() {
 		try {
 			vagrantVm.callMethod("suspend");
@@ -70,6 +98,10 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Returns true if the VM is running
+	 * @return true if the VM is running
+	 */
 	public boolean isRunning() {
 		String state = getState();
 		if (state.equals("running")) {
@@ -78,6 +110,10 @@ public class VagrantVm {
 		return false;
 	}
 
+	/**
+	 * Returns true if the VM is created.
+	 * @return true if the VM is created.
+	 */
 	public boolean isCreated() {
 		String state = getState();
 		if (state.equals("not_created")) {
@@ -86,6 +122,10 @@ public class VagrantVm {
 		return true;
 	}
 
+	/**
+	 * Returns true if the VM is paused.
+	 * @return true if the VM is paused.
+	 */
 	public boolean isPaused() {
 		String state = getState();
 		if (state.equals("saved")) {
@@ -94,6 +134,10 @@ public class VagrantVm {
 		return false;
 	}
 
+	/**
+	 * Returns the state of the VM. Known states are "not_created", "aborted", "poweroff", "running" and "saved"
+	 * @return the state of the VM
+	 */
 	private String getState() {
 		// not_created, aborted, poweroff, running, saved
 		// not_created: VM ist aktuell nicht angelegt
@@ -109,6 +153,10 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Returns the name of the VM
+	 * @return the name of the VM
+	 */
 	public String getName() {
 		try {
 			return ((RubyObject) vagrantVm.callMethod("name")).toString();
@@ -117,6 +165,10 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Returns a new SSH connection to this VM. you can use the connection for upload files or execute command
+	 * @return a new SSH connection
+	 */
 	public VagrantSSHConnection createConnection() {
 		try {
 			return new VagrantSSHConnection(
@@ -126,6 +178,10 @@ public class VagrantVm {
 		}
 	}
 
+	/**
+	 * Returns the UUID that Vagrant uses internally
+	 * @return the UUID of this VM
+	 */
 	public String getUuid() {
 		try {
 			return ((RubyObject) vagrantVm.callMethod("uuid")).toString();

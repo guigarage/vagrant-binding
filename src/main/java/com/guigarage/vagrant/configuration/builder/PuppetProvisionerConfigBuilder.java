@@ -3,6 +3,11 @@ package com.guigarage.vagrant.configuration.builder;
 import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
 import com.guigarage.vagrant.configuration.builder.util.VagrantBuilderException;
 
+/**
+ * Builder for {@link PuppetProvisionerConfig}
+ * @author hendrikebbers
+ *
+ */
 public class PuppetProvisionerConfigBuilder {
 
 	private String manifestPath;
@@ -13,10 +18,13 @@ public class PuppetProvisionerConfigBuilder {
 	
 	private String modulesPath;
 	
-	
 	public PuppetProvisionerConfigBuilder() {
 	}
 	
+	/**
+	 * creates a new {@link PuppetProvisionerConfigBuilder}
+	 * @return a new {@link PuppetProvisionerConfigBuilder}
+	 */
 	public static PuppetProvisionerConfigBuilder create() {
 		return new PuppetProvisionerConfigBuilder();
 	}

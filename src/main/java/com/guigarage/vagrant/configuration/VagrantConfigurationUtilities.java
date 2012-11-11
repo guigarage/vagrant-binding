@@ -3,6 +3,11 @@ package com.guigarage.vagrant.configuration;
 import java.net.URL;
 import java.util.UUID;
 
+/**
+ * Some utilities for the configuration of Vagrant environments. This class creates configurationfiles for Vagrant.
+ * @author hendrikebbers
+ *
+ */
 public class VagrantConfigurationUtilities {
 
 	private VagrantConfigurationUtilities() {
@@ -105,8 +110,7 @@ public class VagrantConfigurationUtilities {
 		}
 		return builder.toString();
 	}
-	
-	
+		
 	private static String createBoxUrlConfig(String vmConfigName, URL boxUrl) {
 		StringBuilder builder = new StringBuilder();
 		if (boxUrl != null) {

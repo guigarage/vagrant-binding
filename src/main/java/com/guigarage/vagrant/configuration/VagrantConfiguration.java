@@ -3,6 +3,15 @@ package com.guigarage.vagrant.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Global configuration for a Vagrant environment that uses {@link VagrantFileTemplateConfiguration} for a Vagrant environment
+ * @author hendrikebbers
+ *
+ */
+/**
+ * @author hendrikebbers
+ *
+ */
 public class VagrantConfiguration {
 
 	private VagrantEnvironmentConfig environmentConfig;
@@ -17,10 +26,18 @@ public class VagrantConfiguration {
 		}
 	}
 	
+	/**
+	 * Returns the configuration of the Vagrant environment
+	 * @return the configuration of the Vagrant environment
+	 */
 	public VagrantEnvironmentConfig getEnvironmentConfig() {
 		return environmentConfig;
 	}
 	
+	/**
+	 * Returns all {@link VagrantFileTemplateConfiguration} used by this configuration.
+	 * @return all {@link VagrantFileTemplateConfiguration}
+	 */
 	public Iterable<VagrantFileTemplateConfiguration> getFileTemplateConfigurations() {
 		return fileTemplateConfigurations;
 	}

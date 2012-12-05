@@ -17,12 +17,18 @@ public class VagrantConfiguration {
 	private VagrantEnvironmentConfig environmentConfig;
 	
 	private List<VagrantFileTemplateConfiguration> fileTemplateConfigurations;
+
+	private List<VagrantFolderTemplateConfiguration> folderTemplateConfigurations;
 	
-	public VagrantConfiguration(VagrantEnvironmentConfig environmentConfig, Iterable<VagrantFileTemplateConfiguration> fileTemplateConfigurations) {
+	public VagrantConfiguration(VagrantEnvironmentConfig environmentConfig, Iterable<VagrantFileTemplateConfiguration> fileTemplateConfigurations, Iterable<VagrantFolderTemplateConfiguration> folderTemplateConfigurations) {
 		this.environmentConfig = environmentConfig;
 		this.fileTemplateConfigurations = new ArrayList<>();
 		for(VagrantFileTemplateConfiguration fileTemplateConfiguration : fileTemplateConfigurations) {
 			this.fileTemplateConfigurations.add(fileTemplateConfiguration);
+		}
+		this.folderTemplateConfigurations = new ArrayList<>();
+		for(VagrantFolderTemplateConfiguration folderTemplateConfiguration : folderTemplateConfigurations) {
+			this.folderTemplateConfigurations.add(folderTemplateConfiguration);
 		}
 	}
 	
@@ -40,5 +46,9 @@ public class VagrantConfiguration {
 	 */
 	public Iterable<VagrantFileTemplateConfiguration> getFileTemplateConfigurations() {
 		return fileTemplateConfigurations;
+	}
+	
+	public Iterable<VagrantFolderTemplateConfiguration> getFolderTemplateConfigurations() {
+		return folderTemplateConfigurations;
 	}
 }

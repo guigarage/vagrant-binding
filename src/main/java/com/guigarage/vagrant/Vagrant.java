@@ -14,6 +14,7 @@ import com.guigarage.vagrant.configuration.VagrantConfiguration;
 import com.guigarage.vagrant.configuration.VagrantConfigurationUtilities;
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
 import com.guigarage.vagrant.configuration.VagrantFileTemplateConfiguration;
+import com.guigarage.vagrant.configuration.VagrantFolderTemplateConfiguration;
 import com.guigarage.vagrant.model.VagrantEnvironment;
 
 public class Vagrant {
@@ -55,18 +56,22 @@ public class Vagrant {
 	}
 	
 	public VagrantEnvironment createEnvironment(File path, VagrantEnvironmentConfig environmentConfig) throws IOException {
-		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), null);
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), null, null);
 	}
 	
 	public VagrantEnvironment createEnvironment(File path, VagrantEnvironmentConfig environmentConfig, Iterable<VagrantFileTemplateConfiguration> fileTemplates) throws IOException {
-		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), fileTemplates);
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), fileTemplates, null);
+	}
+	
+	public VagrantEnvironment createEnvironment(File path, VagrantEnvironmentConfig environmentConfig, Iterable<VagrantFileTemplateConfiguration> fileTemplates, Iterable<VagrantFolderTemplateConfiguration> folderTemplates) throws IOException {
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(environmentConfig), fileTemplates, folderTemplates);
 	}
 	
 	public VagrantEnvironment createEnvironment(File path, VagrantConfiguration configuration) throws IOException {
-		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(configuration.getEnvironmentConfig()), configuration.getFileTemplateConfigurations());
+		return createEnvironment(path, VagrantConfigurationUtilities.createVagrantFileContent(configuration.getEnvironmentConfig()), configuration.getFileTemplateConfigurations(), configuration.getFolderTemplateConfigurations());
 	}
 	
-	public VagrantEnvironment createEnvironment(File path, String vagrantfileContent, Iterable<VagrantFileTemplateConfiguration> fileTemplates) throws IOException {
+	public VagrantEnvironment createEnvironment(File path, String vagrantfileContent, Iterable<VagrantFileTemplateConfiguration> fileTemplates, Iterable<VagrantFolderTemplateConfiguration> folderTemplates) throws IOException {
 		path.mkdirs();
 		File vagrantFile = new File(path, "Vagrantfile");
 		if(!vagrantFile.exists()) {
@@ -81,6 +86,12 @@ public class Vagrant {
 				} else {
 					FileUtils.copyURLToFile(fileTemplate.getUrlTemplate(), fileInVagrantFolder);
 				}
+			}
+		}
+		if(folderTemplates != null) {
+			for(VagrantFolderTemplateConfiguration folderTemplate : folderTemplates) {
+				File folderInVagrantFolder = new File(path, folderTemplate.getPathInVagrantFolder());
+				FileUtils.copyDirectory(folderTemplate.getLocalFolder(), folderInVagrantFolder);
 			}
 		}
 		return createEnvironment(path);

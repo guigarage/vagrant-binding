@@ -2,11 +2,10 @@ package com.guigarage.vagrant.configuration;
 
 import java.io.File;
 import java.net.URI;
-import java.net.URL;
 
 public class VagrantFolderTemplateConfiguration {
 
-	//TODO: Das kopieren der Dateien sollte in eine Methode in dieser Klasse augelagert werden die das VagrantEnvironment als übergabeparameter bekommt.
+	//TODO: Das kopieren der Dateien sollte in eine Methode in dieser Klasse augelagert werden die das VagrantEnvironment als Übergabeparameter bekommt.
 	
 	private File localFolder;
 

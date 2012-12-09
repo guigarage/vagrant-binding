@@ -94,10 +94,12 @@ public class Vagrant {
 		if(folderTemplates != null) {
 			for(VagrantFolderTemplateConfiguration folderTemplate : folderTemplates) {
 				File folderInVagrantFolder = new File(path, folderTemplate.getPathInVagrantFolder());
-				if(folderInVagrantFolder.getParentFile() != null && !folderInVagrantFolder.getParentFile().exists()) {
-					folderInVagrantFolder.getParentFile().mkdirs();
-				}
 				FileUtils.copyDirectory(folderTemplate.getLocalFolder(), folderInVagrantFolder);
+				if(folderTemplate.useUriTemplate()) {
+					FileUtils.copyDirectory(new File(folderTemplate.getUriTemplate()), folderInVagrantFolder);
+				} else {
+					FileUtils.copyDirectory(folderTemplate.getLocalFolder(), folderInVagrantFolder);
+				}
 			}
 		}
 		return createEnvironment(path);

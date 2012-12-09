@@ -69,6 +69,57 @@ public class VagrantFolderTemplateTest {
 	}
 
 	@Test
+	public void testFolderUriTemplates() {
+		File localeFolder = new File(FileUtils.getTempDirectory(), UUID
+				.randomUUID().toString());
+		File vagrantPath = new File(FileUtils.getTempDirectory(), UUID
+				.randomUUID().toString());
+		try {
+			localeFolder.mkdirs();
+			File testFile = new File(localeFolder, "file.tmp");
+			try {
+				testFile.createNewFile();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				Assert.fail(e1.getMessage());
+			}
+
+			VagrantFolderTemplateConfiguration folderTemplateConfiguration = VagrantFolderTemplateConfigurationBuilder
+					.create().withPathInVagrantFolder("testFolder")
+					.withUrlTemplate(localeFolder.toURI()).build();
+			VagrantVmConfig vmConfig = VagrantVmConfigBuilder.create()
+					.withLucid32Box().build();
+			VagrantEnvironmentConfig environmentConfig = VagrantEnvironmentConfigBuilder
+					.create().withVagrantVmConfig(vmConfig).build();
+			VagrantConfiguration vagrantConfiguration = VagrantConfigurationBuilder
+					.create()
+					.withVagrantEnvironmentConfig(environmentConfig)
+					.withVagrantFolderTemplateConfiguration(
+							folderTemplateConfiguration).build();
+
+			Vagrant vagrant = new Vagrant(true);
+			VagrantEnvironment environment = null;
+			try {
+				environment = vagrant.createEnvironment(vagrantPath,
+						vagrantConfiguration);
+				File vagrantFolder = new File(environment.getRootPath());
+				File createdFolder = new File(vagrantFolder, "testFolder");
+				Assert.assertEquals(true, createdFolder.exists());
+				Assert.assertEquals(true, createdFolder.isDirectory());
+				File createdFile = new File(createdFolder, "file.tmp");
+				Assert.assertEquals(true, createdFile.exists());
+				Assert.assertEquals(true, createdFile.isFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+				Assert.fail(e.getMessage());
+			}
+		} finally {
+			FileUtils.deleteQuietly(localeFolder);
+			FileUtils.deleteQuietly(vagrantPath);
+		}
+	}
+	
+	@Test
 	public void testWithoutFolderTemplates() {
 		File vagrantPath = new File(FileUtils.getTempDirectory(), UUID
 				.randomUUID().toString());

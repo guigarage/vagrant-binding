@@ -1,6 +1,8 @@
 package com.guigarage.vagrant.configuration;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URL;
 
 public class VagrantFolderTemplateConfiguration {
 
@@ -10,6 +12,14 @@ public class VagrantFolderTemplateConfiguration {
 
 	private String pathInVagrantFolder;
 
+	private URI uriTemplate;
+
+	public VagrantFolderTemplateConfiguration(URI uriTemplate,
+			String pathInVagrantFolder) {
+		this.uriTemplate = uriTemplate;
+		this.pathInVagrantFolder = pathInVagrantFolder;
+	}
+	
 	/**
 	 * Creates a new {@link VagrantFolderTemplateConfiguration} that uses a local path for the template folder
 	 * @param localFile locale path of the template folder
@@ -21,6 +31,13 @@ public class VagrantFolderTemplateConfiguration {
 		this.pathInVagrantFolder = pathInVagrantFolder;
 	}
 
+	public boolean useUriTemplate() {
+		if (uriTemplate != null) {
+			return true;
+		}
+		return false;
+	}
+	
 	public File getLocalFolder() {
 		return localFolder;
 	}
@@ -31,5 +48,9 @@ public class VagrantFolderTemplateConfiguration {
 	 */
 	public String getPathInVagrantFolder() {
 		return pathInVagrantFolder;
+	}
+	
+	public URI getUriTemplate() {
+		return uriTemplate;
 	}
 }

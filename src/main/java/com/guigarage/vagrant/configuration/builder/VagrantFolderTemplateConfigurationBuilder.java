@@ -19,6 +19,16 @@ public class VagrantFolderTemplateConfigurationBuilder {
 	}
 
 	public VagrantFolderTemplateConfigurationBuilder withLocalFolder(
+			String localFolder) {
+		if(localFolder == null) {
+			this.localFolder = null;
+		} else {
+			this.localFolder = new File(localFolder);
+		}
+		return this;
+	}
+	
+	public VagrantFolderTemplateConfigurationBuilder withLocalFolder(
 			File localFolder) {
 		this.localFolder = localFolder;
 		return this;

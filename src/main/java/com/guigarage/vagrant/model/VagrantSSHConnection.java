@@ -76,4 +76,7 @@ public class VagrantSSHConnection {
 			throw new VagrantException(exception);
 		}
 	}
+	public int execute(String command) {
+		return execute(command, false);
+	}
 }

@@ -100,7 +100,7 @@ public class VagrantFolderTemplateTest {
 		try {
 			VagrantFolderTemplateConfigurationBuilder
 					.create().withPathInVagrantFolder("testFolder")
-					.withLocalFolder(null).build();
+					.withLocalFolder((File)null).build();
 			Assert.fail();
 		} catch (Exception e) {
 		}

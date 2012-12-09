@@ -81,6 +81,9 @@ public class Vagrant {
 		if(fileTemplates != null) {
 			for(VagrantFileTemplateConfiguration fileTemplate : fileTemplates) {
 				File fileInVagrantFolder = new File(path, fileTemplate.getPathInVagrantFolder());
+				if(fileInVagrantFolder.getParentFile() != null && !fileInVagrantFolder.getParentFile().exists()) {
+					fileInVagrantFolder.getParentFile().mkdirs();
+				}
 				if(fileTemplate.useLocalFile()) {
 					FileUtils.copyFile(fileTemplate.getLocalFile(), fileInVagrantFolder);
 				} else {
@@ -91,6 +94,9 @@ public class Vagrant {
 		if(folderTemplates != null) {
 			for(VagrantFolderTemplateConfiguration folderTemplate : folderTemplates) {
 				File folderInVagrantFolder = new File(path, folderTemplate.getPathInVagrantFolder());
+				if(folderInVagrantFolder.getParentFile() != null && !folderInVagrantFolder.getParentFile().exists()) {
+					folderInVagrantFolder.getParentFile().mkdirs();
+				}
 				FileUtils.copyDirectory(folderTemplate.getLocalFolder(), folderInVagrantFolder);
 			}
 		}

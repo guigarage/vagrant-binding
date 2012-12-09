@@ -1,6 +1,7 @@
 package com.guigarage.vagrant.configuration.builder;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.guigarage.vagrant.configuration.VagrantFileTemplateConfiguration;
@@ -26,7 +27,24 @@ public class VagrantFileTemplateConfigurationBuilder {
 		this.localFile = null;
 		return this;
 	}
+	
+	public VagrantFileTemplateConfigurationBuilder withUrlTemplate(
+			String urlTemplate) throws MalformedURLException {
+		this.urlTemplate = new URL(urlTemplate);
+		this.localFile = null;
+		return this;
+	}
 
+	public VagrantFileTemplateConfigurationBuilder withLocalFile(String localFile) {
+		if(localFile == null) {
+			this.localFile = null;
+		} else {
+			this.localFile = new File(localFile);
+		}
+		this.urlTemplate = null;
+		return this;
+	}
+	
 	public VagrantFileTemplateConfigurationBuilder withLocalFile(File localFile) {
 		this.localFile = localFile;
 		this.urlTemplate = null;

@@ -35,7 +35,7 @@ You can configure your vm by using a static ip and some port forwarding for exam
     VagrantVmConfig vmConfig = VagrantVmConfigBuilder
         .create()
         .withLucid32Box()
-        .withName("myVM").
+        .withName("myVM")
         .withHostOnlyIp("192.168.50.4")
         .withVagrantPortForwarding(portForwarding).build();
 

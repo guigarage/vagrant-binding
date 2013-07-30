@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email = "colby@astro.berkeley.edu"
   s.homepage = "http://log4r.rubyforge.org"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.23"
   s.summary = "Log4r, logging framework for ruby"
 
   if s.respond_to? :specification_version then

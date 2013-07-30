@@ -19,14 +19,14 @@ public class NewBoxUsage {
 
 	@Test
 	public void initWithNewBox() {
-		String boxName = "unitTestBox" + System.currentTimeMillis();
+		String boxName = "unittestbox" + System.currentTimeMillis();
 
 		Vagrant vagrant = new Vagrant(true);
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withBoxName(boxName)
 				.withBoxUrl(VagrantUtils.getInstance().getLucid32Url())
-				.withName("UniTestVm").build();
+				.withName("unitestvm").build();
 		VagrantEnvironmentConfig envConfig = new VagrantEnvironmentConfigBuilder()
 				.withVagrantVmConfig(vmConfig).build();
 

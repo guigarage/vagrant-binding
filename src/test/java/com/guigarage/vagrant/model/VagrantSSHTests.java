@@ -23,7 +23,7 @@ public class VagrantSSHTests {
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withLucid32Box()
-				.withName("UniTestVm").build();
+				.withName("unitestvm").build();
 		VagrantEnvironmentConfig envConfig = new VagrantEnvironmentConfigBuilder()
 				.withVagrantVmConfig(vmConfig).build();
 
@@ -63,7 +63,7 @@ public class VagrantSSHTests {
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withLucid32Box()
-				.withName("UniTestVm").build();
+				.withName("unitestvm").build();
 		VagrantEnvironmentConfig envConfig = new VagrantEnvironmentConfigBuilder()
 				.withVagrantVmConfig(vmConfig).build();
 

@@ -21,7 +21,9 @@ public class VagrantConfigurationUtilitiesTest {
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(null);
 			String vagrantFileContent = VagrantConfigurationUtilities
 					.createVagrantFileContent(config);
-			String expected = "Vagrant::Config.run do |config|" + "\n" + "end";
+            String expected = "VAGRANTFILE_API_VERSION = \"2\"\n" +
+                              "Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|\n" +
+                              "end";
 			assertTrimEquals(expected, vagrantFileContent);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -34,11 +36,12 @@ public class VagrantConfigurationUtilitiesTest {
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(vmConfigs);
 			String vagrantFileContent = VagrantConfigurationUtilities
 					.createVagrantFileContent(config);
-			String expected = "Vagrant::Config.run do |config|" + "\n" +
-			"config.vm.define :unitTest do |unitTest_config|" + "\n" +
-			"unitTest_config.vm.box = \"lucid32\""+ "\n" +
-			"end"+ "\n" +
-			"end";
+            String expected = "VAGRANTFILE_API_VERSION = \"2\"\n" +
+                    "Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|\n" +
+                    "config.vm.define :unitTest do |unitTest_config|" + "\n" +
+                    "unitTest_config.vm.box = \"lucid32\""+ "\n" +
+                    "end"+ "\n" +
+                    "end";
 			assertTrimEquals(expected, vagrantFileContent);
 		} catch (Exception e) {
 			e.printStackTrace();

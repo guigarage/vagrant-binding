@@ -47,7 +47,7 @@ public class Vagrant {
 				+ "\n" + "return Vagrant::Environment.new");
 		return new VagrantEnvironment(vagrantEnv);
 	}
-	
+
 	public VagrantEnvironment createEnvironment(File path) {
 		RubyObject vagrantEnv = (RubyObject) scriptingContainer.runScriptlet("require 'rubygems'\n"
 				+ "require 'vagrant'\n"

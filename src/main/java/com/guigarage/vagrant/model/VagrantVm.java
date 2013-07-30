@@ -1,5 +1,7 @@
 package com.guigarage.vagrant.model;
 
+import org.jruby.RubyBoolean;
+import org.jruby.RubyHash;
 import org.jruby.RubyObject;
 import org.jruby.RubySymbol;
 import org.jruby.exceptions.RaiseException;
@@ -73,7 +75,9 @@ public class VagrantVm {
 	 */
 	public void destroy() {
 		try {
-			vagrantVm.callMethod("destroy");
+            RubyHash rubyHash = RubyHash.newSmallHash(vagrantVm.getRuntime());
+            rubyHash.put(RubySymbol.newSymbol(vagrantVm.getRuntime(), "force_confirm_destroy"), RubyBoolean.createTrueClass(vagrantVm.getRuntime()));
+			vagrantVm.callMethod("action", RubySymbol.newSymbol(vagrantVm.getRuntime(), "destroy"), rubyHash);
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
 		}
@@ -146,7 +150,7 @@ public class VagrantVm {
 		// running: VM läuft
 		// saved: VM wurde pausiert
 		try {
-			RubySymbol symbol = (RubySymbol) vagrantVm.callMethod("state");
+			RubySymbol symbol = (RubySymbol) vagrantVm.callMethod("state").getInstanceVariables().getInstanceVariable("@id");
 			return symbol.asJavaString();
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
@@ -159,7 +163,7 @@ public class VagrantVm {
 	 */
 	public String getName() {
 		try {
-			return ((RubyObject) vagrantVm.callMethod("name")).toString();
+			return vagrantVm.callMethod("name").toString();
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
 		}
@@ -172,7 +176,7 @@ public class VagrantVm {
 	public VagrantSSHConnection createConnection() {
 		try {
 			return new VagrantSSHConnection(
-					((RubyObject) vagrantVm.callMethod("channel")));
+					((RubyObject) vagrantVm.callMethod("communicate")));
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
 		}
@@ -184,7 +188,7 @@ public class VagrantVm {
 	 */
 	public String getUuid() {
 		try {
-			return ((RubyObject) vagrantVm.callMethod("uuid")).toString();
+			return vagrantVm.callMethod("id").toString();
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
 		}

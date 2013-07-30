@@ -1,0 +1,337 @@
+package configuration for libffi is not found
+have_header: checking for ffi.h... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib      '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: int main(int argc, char **argv)
+4: {
+5:   return 0;
+6: }
+/* end */
+
+"gcc -E -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC  conftest.c -o conftest.i"
+checked program was:
+/* begin */
+1: #include "ruby.h"
+2: 
+3: #include <ffi.h>
+/* end */
+
+--------------------
+
+have_library: checking for ffi_call() in -lffi... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib      '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: #include <ffi.h>
+ 4: 
+ 5: /*top*/
+ 6: int t() { void ((*volatile p)()); p = (void ((*)()))ffi_call; return 0; }
+ 7: int main(int argc, char **argv)
+ 8: {
+ 9:   if (argc > 1000000) {
+10:     printf("%p", &t);
+11:   }
+12: 
+13:   return 0;
+14: }
+/* end */
+
+--------------------
+
+have_func: checking for ffi_prep_closure()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:4: error: ‘ffi_prep_closure’ undeclared (first use in this function)
+conftest.c:4: error: (Each undeclared identifier is reported only once
+conftest.c:4: error: for each function it appears in.)
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))ffi_prep_closure; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { ffi_prep_closure(); return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+have_func: checking for ffi_raw_call()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:4: error: ‘ffi_raw_call’ undeclared (first use in this function)
+conftest.c:4: error: (Each undeclared identifier is reported only once
+conftest.c:4: error: for each function it appears in.)
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))ffi_raw_call; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { ffi_raw_call(); return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+have_func: checking for ffi_prep_raw_closure()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:4: error: ‘ffi_prep_raw_closure’ undeclared (first use in this function)
+conftest.c:4: error: (Each undeclared identifier is reported only once
+conftest.c:4: error: for each function it appears in.)
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))ffi_prep_raw_closure; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { ffi_prep_raw_closure(); return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+have_func: checking for rb_thread_blocking_region()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))rb_thread_blocking_region; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+have_func: checking for rb_thread_call_with_gvl()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:4: error: ‘rb_thread_call_with_gvl’ undeclared (first use in this function)
+conftest.c:4: error: (Each undeclared identifier is reported only once
+conftest.c:4: error: for each function it appears in.)
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))rb_thread_call_with_gvl; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { rb_thread_call_with_gvl(); return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+have_func: checking for rb_thread_call_without_gvl()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:4: error: ‘rb_thread_call_without_gvl’ undeclared (first use in this function)
+conftest.c:4: error: (Each undeclared identifier is reported only once
+conftest.c:4: error: for each function it appears in.)
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))rb_thread_call_without_gvl; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { rb_thread_call_without_gvl(); return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+have_func: checking for ffi_prep_cif_var()... -------------------- yes
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+conftest.c: In function ‘t’:
+conftest.c:4: error: ‘ffi_prep_cif_var’ undeclared (first use in this function)
+conftest.c:4: error: (Each undeclared identifier is reported only once
+conftest.c:4: error: for each function it appears in.)
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { void ((*volatile p)()); p = (void ((*)()))ffi_prep_cif_var; return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+"gcc -o conftest -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/x86_64-linux -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1/ruby/backward -I/tmp/vagrant-temp/embedded/include/ruby-1.9.1 -I.    -I/tmp/vagrant-temp/embedded/include -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib -fPIC conftest.c  -L. -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -Wl,-R/tmp/vagrant-temp/embedded/lib -L. -I/tmp/vagrant-temp/embedded/include -L/tmp/vagrant-temp/embedded/lib  -rdynamic -Wl,-export-dynamic -L/tmp/vagrant-temp/embedded/lib  -Wl,-R/tmp/vagrant-temp/embedded/lib     -lffi  '-Wl,-rpath,/../lib' -Wl,-R -Wl,/tmp/vagrant-temp/embedded/lib -L/tmp/vagrant-temp/embedded/lib -lruby -lffi  -lpthread -lrt -ldl -lcrypt -lm   -lc"
+checked program was:
+/* begin */
+ 1: #include "ruby.h"
+ 2: 
+ 3: /*top*/
+ 4: int t() { ffi_prep_cif_var(); return 0; }
+ 5: int main(int argc, char **argv)
+ 6: {
+ 7:   if (argc > 1000000) {
+ 8:     printf("%p", &t);
+ 9:   }
+10: 
+11:   return 0;
+12: }
+/* end */
+
+--------------------
+
+extconf.h is:
+/* begin */
+ 1: #ifndef EXTCONF_H
+ 2: #define EXTCONF_H
+ 3: #define HAVE_FFI_H 1
+ 4: #define HAVE_FFI_PREP_CLOSURE 1
+ 5: #define HAVE_FFI_RAW_CALL 1
+ 6: #define HAVE_FFI_PREP_RAW_CLOSURE 1
+ 7: #define HAVE_RAW_API 1
+ 8: #define HAVE_RB_THREAD_BLOCKING_REGION 1
+ 9: #define HAVE_RB_THREAD_CALL_WITH_GVL 1
+10: #define HAVE_RB_THREAD_CALL_WITHOUT_GVL 1
+11: #define HAVE_FFI_PREP_CIF_VAR 1
+12: #define RUBY_1_9 1
+13: #endif
+/* end */
+

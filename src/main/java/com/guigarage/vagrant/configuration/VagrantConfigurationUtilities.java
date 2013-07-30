@@ -1,7 +1,8 @@
 package com.guigarage.vagrant.configuration;
 
+import com.guigarage.vagrant.util.RandomString;
+
 import java.net.URL;
-import java.util.UUID;
 
 /**
  * Some utilities for the configuration of Vagrant environments. This class creates configurationfiles for Vagrant.
@@ -10,13 +11,14 @@ import java.util.UUID;
  */
 public class VagrantConfigurationUtilities {
 
-	private VagrantConfigurationUtilities() {
+    private VagrantConfigurationUtilities() {
 	}
 
 	public static String createVagrantFileContent(
 			VagrantEnvironmentConfig config) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Vagrant::Config.run do |config|").append("\n");
+        builder.append("VAGRANTFILE_API_VERSION = \"2\"\n");
+		builder.append("Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|").append("\n");
 		
 		//TODO: Wenn nicht MultiVM kann man hier auch ein einfaches Config-File erstellen und so primaryVm etc. nutzen...
 		
@@ -31,7 +33,7 @@ public class VagrantConfigurationUtilities {
 		StringBuilder builder = new StringBuilder();
 		String vmName = vmConfig.getName();
 		if (vmName == null) {
-			vmName = UUID.randomUUID().toString();
+			vmName = RandomString.randomString(10);
 		}
 		builder.append(
 				"config.vm.define :" + vmName + " do |" + vmName

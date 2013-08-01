@@ -12,6 +12,8 @@ import java.util.List;
 public class VagrantVmConfig {
 
 	private List<VagrantPortForwarding> portForwardings;
+
+    private List<VagrantSyncFolder> syncFolders;
 	
 	private PuppetProvisionerConfig puppetProvisionerConfig;
 	
@@ -28,6 +30,8 @@ public class VagrantVmConfig {
 	private boolean guiMode;
 
     private boolean privateNetwork;
+
+    private String guest;
 	
 	/**
 	 * Constructs a configuration.
@@ -36,23 +40,32 @@ public class VagrantVmConfig {
      * @param hostName the host name of the VM. This can be null
      * @param boxName the name of the Vagrant box this VM depends on.
      * @param boxUrl the url of the Vagrant box this VM depends on
+     * @param guest
      * @param portForwardings the configuration for all port forwardings. This can be null
+     * @param syncFolders
      * @param puppetProvisionerConfig the puppet configuration for the VM. This can be null
      * @param guiMode true if the VM should run in gui mode. This means that VirtualBox is not running in headless mode
      * @param privateNetwork
      */
-	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, Iterable<VagrantPortForwarding> portForwardings, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork) {
+	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest, Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork) {
 		this.portForwardings = new ArrayList<VagrantPortForwarding>();
+        this.syncFolders = new ArrayList<VagrantSyncFolder>();
 		if(portForwardings != null) {
 			for(VagrantPortForwarding portForwarding : portForwardings) {
 				this.portForwardings.add(portForwarding);
 			}
 		}
+        if(syncFolders != null) {
+            for(VagrantSyncFolder syncFolder : syncFolders) {
+                this.syncFolders.add(syncFolder);
+            }
+        }
 		this.puppetProvisionerConfig = puppetProvisionerConfig;
 		this.ip = ip;
 		this.name = name;
 		this.boxName = boxName;
 		this.boxUrl = boxUrl;
+        this.guest = guest;
 		this.hostName = hostName;
 		this.guiMode = guiMode;
         this.privateNetwork = privateNetwork;
@@ -81,8 +94,12 @@ public class VagrantVmConfig {
 	public String getBoxName() {
 		return boxName;
 	}
-	
-	/**
+
+    public String getGuest() {
+        return guest;
+    }
+
+    /**
 	 * Returns the URL of the box Vagrant will use as template for the VM. If the box with the given name is not installed on your system Vagrant will download it by using this URL.
 	 * @return the URL of the box
 	 */
@@ -105,8 +122,12 @@ public class VagrantVmConfig {
 	public Iterable<VagrantPortForwarding> getPortForwardings() {
 		return portForwardings;
 	}
-	
-	/**
+
+    public List<VagrantSyncFolder> getSyncFolders() {
+        return syncFolders;
+    }
+
+    /**
 	 * Returns the name of the VM
 	 * @return the name of the VM
 	 */

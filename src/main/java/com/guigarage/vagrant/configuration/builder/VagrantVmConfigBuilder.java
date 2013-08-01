@@ -7,12 +7,15 @@ import java.util.List;
 
 import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
 import com.guigarage.vagrant.configuration.VagrantPortForwarding;
+import com.guigarage.vagrant.configuration.VagrantSyncFolder;
 import com.guigarage.vagrant.configuration.VagrantVmConfig;
 import com.guigarage.vagrant.configuration.builder.util.VagrantBuilderException;
 
 public class VagrantVmConfigBuilder {
 
-private List<VagrantPortForwarding> portForwardings;
+    private List<VagrantPortForwarding> portForwardings;
+
+    private List<VagrantSyncFolder> syncFolders;
 	
 	private PuppetProvisionerConfig puppetProvisionerConfig;
 	
@@ -29,9 +32,12 @@ private List<VagrantPortForwarding> portForwardings;
 	private boolean guiMode;
 
     private boolean privateNetwork;
-	
-	public VagrantVmConfigBuilder() {
+
+    private String guest;
+
+    public VagrantVmConfigBuilder() {
 		portForwardings = new ArrayList<VagrantPortForwarding>();
+        syncFolders = new ArrayList<VagrantSyncFolder>();
 	}
 	
 	public static VagrantVmConfigBuilder create() {
@@ -47,6 +53,11 @@ private List<VagrantPortForwarding> portForwardings;
 		this.portForwardings.add(portForwarding);
 		return this;
 	}
+
+    public VagrantVmConfigBuilder withVagrantSyncFolders(VagrantSyncFolder syncFolder) {
+        this.syncFolders.add(syncFolder);
+        return this;
+    }
 	
 	public VagrantVmConfigBuilder withHostName(String hostName) {
 		this.hostName = hostName;
@@ -62,7 +73,12 @@ private List<VagrantPortForwarding> portForwardings;
 		this.name = name;
 		return this;
 	}
-	
+
+    public VagrantVmConfigBuilder withSynchHostOnlyIp(String ip) {
+        this.ip = ip;
+        return this;
+    }
+
 	public VagrantVmConfigBuilder withHostOnlyIp(String ip) {
 		this.ip = ip;
 		return this;
@@ -98,6 +114,11 @@ private List<VagrantPortForwarding> portForwardings;
 		this.boxName = boxName;
 		return this;
 	}
+
+    public VagrantVmConfigBuilder withVmGuest(String guest) {
+        this.guest = guest;
+        return this;
+    }
 	
 	public VagrantVmConfigBuilder withBoxUrl(URL boxUrl) {
 		this.boxUrl = boxUrl;
@@ -108,6 +129,6 @@ private List<VagrantPortForwarding> portForwardings;
 		if(boxName == null) {
 			throw new VagrantBuilderException("No boxName defined");
 		}
-		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, portForwardings, puppetProvisionerConfig, guiMode, privateNetwork);
+		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, guest, portForwardings, syncFolders, puppetProvisionerConfig, guiMode, privateNetwork);
 	}
 }

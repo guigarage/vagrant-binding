@@ -34,10 +34,10 @@ public class VagrantConfigurationTests {
 		
 		try {
 			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<VagrantVmConfig>();
-			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, false, true));
+			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, null, null, false, true));
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(
 					vmConfigs);
-			Vagrant vagrant = new Vagrant(true);
+			Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 			File tempDir = VagrantTestUtils.createTempDir();
 			VagrantEnvironment env = vagrant.createEnvironment(tempDir, config);
 			VagrantVm vm = env.getAllVms().iterator().next();

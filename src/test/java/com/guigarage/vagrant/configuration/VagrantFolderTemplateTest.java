@@ -46,7 +46,7 @@ public class VagrantFolderTemplateTest {
 					.withVagrantFolderTemplateConfiguration(
 							folderTemplateConfiguration).build();
 
-			Vagrant vagrant = new Vagrant(true);
+			Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 			VagrantEnvironment environment = null;
 			try {
 				environment = vagrant.createEnvironment(vagrantPath,
@@ -97,7 +97,7 @@ public class VagrantFolderTemplateTest {
 					.withVagrantFolderTemplateConfiguration(
 							folderTemplateConfiguration).build();
 
-			Vagrant vagrant = new Vagrant(true);
+			Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 			VagrantEnvironment environment = null;
 			try {
 				environment = vagrant.createEnvironment(vagrantPath,
@@ -133,7 +133,7 @@ public class VagrantFolderTemplateTest {
 					.withVagrantEnvironmentConfig(environmentConfig)
 					.build();
 
-			Vagrant vagrant = new Vagrant(true);
+			Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 			try {
 				vagrant.createEnvironment(vagrantPath,
 						vagrantConfiguration);

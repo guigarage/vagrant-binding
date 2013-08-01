@@ -20,27 +20,25 @@ import com.guigarage.vagrant.model.VagrantEnvironment;
 public class Vagrant {
 
 	private ScriptingContainer scriptingContainer;
-	
-	public Vagrant() {
-		this(false);
-	}
-	
-	public Vagrant(boolean debug) {
+
+    public enum LogLevel {
+        DEBUG,
+        INFO,
+        WARN,
+        ERROR,
+    }
+
+	public Vagrant(LogLevel logLevel) {
 		scriptingContainer = new ScriptingContainer(
 				LocalContextScope.SINGLETHREAD);
-		if(debug) {
-			debug();
-		}
+
+        Map currentEnv = scriptingContainer.getEnvironment();
+        Map newEnv = new HashMap(currentEnv);
+        newEnv.put("VAGRANT_LOG", logLevel.toString());
+        scriptingContainer.setEnvironment(newEnv);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void debug() {
-		Map currentEnv = scriptingContainer.getEnvironment();
-		Map newEnv = new HashMap(currentEnv);
-		newEnv.put("VAGRANT_LOG", "DEBUG");
-		scriptingContainer.setEnvironment(newEnv);
-	}
-	
+
 	public VagrantEnvironment createEnvironment() {
 		RubyObject vagrantEnv = (RubyObject) scriptingContainer.runScriptlet("require 'rubygems'\n"
 				+ "require 'vagrant'\n"

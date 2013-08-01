@@ -21,7 +21,7 @@ public class NewBoxUsage {
 	public void initWithNewBox() {
 		String boxName = "unittestbox" + System.currentTimeMillis();
 
-		Vagrant vagrant = new Vagrant(true);
+		Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withBoxName(boxName)

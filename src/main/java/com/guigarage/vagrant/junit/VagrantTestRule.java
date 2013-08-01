@@ -97,7 +97,7 @@ public class VagrantTestRule extends TestWatcher {
 			throw new VagrantException("Error while creating "
 					+ this.getClass().getSimpleName(), e);
 		}
-		Vagrant vagrant = new Vagrant(true);
+		Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		environment = vagrant.createEnvironment(vagrantDir);
 	}
 

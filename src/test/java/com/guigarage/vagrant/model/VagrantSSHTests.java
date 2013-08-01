@@ -19,7 +19,7 @@ public class VagrantSSHTests {
 
 	@Test
 	public void testSSHExecute() {
-		Vagrant vagrant = new Vagrant(true);
+		Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withLucid32Box()
@@ -59,7 +59,7 @@ public class VagrantSSHTests {
 	
 	@Test
 	public void testSSHUpload() {
-		Vagrant vagrant = new Vagrant(true);
+		Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withLucid32Box()

@@ -43,7 +43,17 @@ public class VagrantConfigurationUtilities {
 				.getPortForwardings()) {
 			builder.append(createPortForwardingConfig(vmName + "_config", portForwarding));
 		}
+
+        for (VagrantSyncFolder syncFolder : vmConfig
+                .getSyncFolders()) {
+            builder.append(createSyncFolderConfig(vmName + "_config", syncFolder));
+        }
+
 		builder.append(createBoxNameConfig(vmName + "_config", vmConfig.getBoxName()));
+
+        if (vmConfig.getGuest() != null) {
+            builder.append(createVmGuestConfig(vmName + "_config", vmConfig.getGuest()));
+        }
 
 		URL boxUrl = vmConfig.getBoxUrl();
 		if (boxUrl != null) {
@@ -78,8 +88,27 @@ public class VagrantConfigurationUtilities {
 		builder.append("end").append("\n");
 		return builder.toString();
 	}
-	
-	private static String createPortForwardingConfig(String vmConfigName, VagrantPortForwarding portForwarding) {
+
+    private static String createVmGuestConfig(String vmConfigName, String guest) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(
+                vmConfigName + ".vm.guest = \"" + guest
+                        + "\"").append("\n");
+        return builder.toString();
+    }
+
+    private static String createSyncFolderConfig(String vmConfigName, VagrantSyncFolder syncFolder) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(vmConfigName + ".vm.synced_folder ")
+                .append("'" + syncFolder.getSource()).append("', ")
+                .append("'" + syncFolder.getDestination()).append("', ")
+                .append("disabled: " + syncFolder.isDisabled())
+                .append("\n");
+        return builder.toString();
+
+    }
+
+    private static String createPortForwardingConfig(String vmConfigName, VagrantPortForwarding portForwarding) {
 		StringBuilder builder = new StringBuilder();
         builder.append(
                 vmConfigName + ".vm.network :forwarded_port, guest: " + portForwarding.getGuestport()
@@ -87,7 +116,7 @@ public class VagrantConfigurationUtilities {
                 .append("\n");
         return builder.toString();
 	}
-	
+
 	private static String createBoxNameConfig(String vmConfigName, String boxName) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(

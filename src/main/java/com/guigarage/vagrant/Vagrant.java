@@ -36,7 +36,7 @@ public class Vagrant {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void debug() {
 		Map currentEnv = scriptingContainer.getEnvironment();
-		Map newEnv = new HashMap<>(currentEnv);
+		Map newEnv = new HashMap(currentEnv);
 		newEnv.put("VAGRANT_LOG", "DEBUG");
 		scriptingContainer.setEnvironment(newEnv);
 	}

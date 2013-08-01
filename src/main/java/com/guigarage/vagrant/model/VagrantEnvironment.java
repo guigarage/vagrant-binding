@@ -141,7 +141,7 @@ public class VagrantEnvironment {
 		try {
 			RubyArray boxes = (RubyArray) ((RubyObject) vagrantEnvironment
 					.callMethod("boxes")).getInternalVariable("@boxes");
-			ArrayList<String> ret = new ArrayList<>();
+			ArrayList<String> ret = new ArrayList<String>();
 			for (Object box : boxes) {
 				ret.add(((RubyObject) box).callMethod("name").toString());
 			}
@@ -159,7 +159,7 @@ public class VagrantEnvironment {
 		try {
 			RubyArray o = (RubyArray) vagrantEnvironment
 					.callMethod("machine_names");
-			ArrayList<VagrantVm> vms = new ArrayList<>();
+			ArrayList<VagrantVm> vms = new ArrayList<VagrantVm>();
 			for (IRubyObject vm : o.toJavaArray()) {
 				vms.add(new VagrantVm((RubyObject) vagrantEnvironment.callMethod("machine", vm, defaultProfider)));
 			}

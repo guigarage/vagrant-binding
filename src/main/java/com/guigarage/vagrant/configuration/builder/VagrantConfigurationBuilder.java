@@ -18,8 +18,8 @@ public class VagrantConfigurationBuilder {
 	private List<VagrantFolderTemplateConfiguration> folderTemplateConfigurations;
 
 	public VagrantConfigurationBuilder() {
-		fileTemplateConfigurations = new ArrayList<>();
-		folderTemplateConfigurations = new ArrayList<>();
+		fileTemplateConfigurations = new ArrayList<VagrantFileTemplateConfiguration>();
+		folderTemplateConfigurations = new ArrayList<VagrantFolderTemplateConfiguration>();
 	}
 
 	public static VagrantConfigurationBuilder create() {

@@ -12,7 +12,7 @@ public class VagrantEnvironmentConfigBuilder {
 	private List<VagrantVmConfig> vmConfigs;
 
 	public VagrantEnvironmentConfigBuilder() {
-		vmConfigs = new ArrayList<>();
+		vmConfigs = new ArrayList<VagrantVmConfig>();
 	}
 
 	public static VagrantEnvironmentConfigBuilder create() {

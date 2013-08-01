@@ -52,7 +52,11 @@ public class VagrantConfigurationUtilities {
 
 		String ip = vmConfig.getIp();
 		if (ip != null) {
-			builder.append(createHostOnlyIpConfig(vmName + "_config", ip));
+            if (vmConfig.isPrivateNetwork()) {
+                builder.append(createPrivateNetworkIpConfig(vmName + "_config", ip));
+            } else {
+                builder.append(createHostOnlyIpConfig(vmName + "_config", ip));
+            }
 		}
 
 		boolean guiMode = vmConfig.isGuiMode();
@@ -77,22 +81,11 @@ public class VagrantConfigurationUtilities {
 	
 	private static String createPortForwardingConfig(String vmConfigName, VagrantPortForwarding portForwarding) {
 		StringBuilder builder = new StringBuilder();
-		String portForwardingName = portForwarding.getName();
-		if (portForwardingName != null) {
-			builder.append(
-					vmConfigName + ".vm.forward_port \""
-							+ portForwardingName + "\", "
-							+ portForwarding.getGuestport() + ", "
-							+ portForwarding.getHostport())
-					.append("\n");
-		} else {
-			builder.append(
-					vmConfigName + ".vm.forward_port "
-							+ portForwarding.getGuestport() + ", "
-							+ portForwarding.getHostport())
-					.append("\n");
-		}
-		return builder.toString();
+        builder.append(
+                vmConfigName + ".vm.network :forwarded_port, guest: " + portForwarding.getGuestport()
+                        + ", host: " + portForwarding.getHostport())
+                .append("\n");
+        return builder.toString();
 	}
 	
 	private static String createBoxNameConfig(String vmConfigName, String boxName) {
@@ -107,7 +100,7 @@ public class VagrantConfigurationUtilities {
 		StringBuilder builder = new StringBuilder();
 		if (hostName != null) {
 			builder.append(
-					vmConfigName + ".vm.host_name = \"" + hostName + ".local\"")
+					vmConfigName + ".vm.hostname = \"" + hostName + ".local\"")
 					.append("\n");
 		}
 		return builder.toString();
@@ -132,6 +125,16 @@ public class VagrantConfigurationUtilities {
 		}
 		return builder.toString();
 	}
+
+    private static String createPrivateNetworkIpConfig(String vmConfigName, String ip) {
+        StringBuilder builder = new StringBuilder();
+        if (ip != null) {
+            builder.append(
+                    vmConfigName + ".vm.network :private_network, ip: \"" + ip + "\"")
+                    .append("\n");
+        }
+        return builder.toString();
+    }
 	
 	private static String createGuiModeConfig(String vmConfigName) {
 		StringBuilder builder = new StringBuilder();

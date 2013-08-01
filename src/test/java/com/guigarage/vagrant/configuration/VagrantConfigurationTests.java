@@ -24,7 +24,7 @@ public class VagrantConfigurationTests {
 		}
 
 		try {
-			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<>();
+			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<VagrantVmConfig>();
 			new VagrantEnvironmentConfig(
 					vmConfigs);
 		} catch (Exception e) {
@@ -33,8 +33,8 @@ public class VagrantConfigurationTests {
 		}
 		
 		try {
-			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<>();
-			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, false));
+			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<VagrantVmConfig>();
+			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, false, true));
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(
 					vmConfigs);
 			Vagrant vagrant = new Vagrant(true);

@@ -27,9 +27,11 @@ private List<VagrantPortForwarding> portForwardings;
 	private String hostName;
 	
 	private boolean guiMode;
+
+    private boolean privateNetwork;
 	
 	public VagrantVmConfigBuilder() {
-		portForwardings = new ArrayList<>();
+		portForwardings = new ArrayList<VagrantPortForwarding>();
 	}
 	
 	public static VagrantVmConfigBuilder create() {
@@ -65,6 +67,12 @@ private List<VagrantPortForwarding> portForwardings;
 		this.ip = ip;
 		return this;
 	}
+
+    public VagrantVmConfigBuilder withPrivateNetworkIp(String ip) {
+        this.ip = ip;
+        this.privateNetwork = true;
+        return this;
+    }
 	
 	public VagrantVmConfigBuilder withLucid32Box() {
 		this.boxName = "lucid32";
@@ -100,6 +108,6 @@ private List<VagrantPortForwarding> portForwardings;
 		if(boxName == null) {
 			throw new VagrantBuilderException("No boxName defined");
 		}
-		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, portForwardings, puppetProvisionerConfig, guiMode);
+		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, portForwardings, puppetProvisionerConfig, guiMode, privateNetwork);
 	}
 }

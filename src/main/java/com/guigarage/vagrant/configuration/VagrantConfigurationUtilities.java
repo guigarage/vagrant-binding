@@ -146,7 +146,7 @@ public class VagrantConfigurationUtilities {
 		StringBuilder builder = new StringBuilder();
 		if (hostName != null) {
 			builder.append(
-					vmConfigName + ".vm.hostname = \"" + hostName + ".local\"")
+					vmConfigName + ".vm.hostname = \"" + hostName + "\"")
 					.append("\n");
 		}
 		return builder.toString();

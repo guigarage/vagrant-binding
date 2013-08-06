@@ -3,6 +3,7 @@ package com.guigarage.vagrant.configuration;
 import com.guigarage.vagrant.util.RandomString;
 
 import java.net.URL;
+import java.util.Map;
 
 /**
  * Some utilities for the configuration of Vagrant environments. This class creates configurationfiles for Vagrant.
@@ -43,6 +44,10 @@ public class VagrantConfigurationUtilities {
 				.getPortForwardings()) {
 			builder.append(createPortForwardingConfig(vmName + "_config", portForwarding));
 		}
+
+        for (Map.Entry<String, String> entry : vmConfig.getModifyVm().entrySet()) {
+            builder.append(createModifyVmConfig(vmName + "_config", entry));
+        }
 
         for (VagrantSyncFolder syncFolder : vmConfig
                 .getSyncFolders()) {
@@ -88,6 +93,14 @@ public class VagrantConfigurationUtilities {
 		builder.append("end").append("\n");
 		return builder.toString();
 	}
+
+    private static String createModifyVmConfig(String vmConfigName, Map.Entry<String, String> entry) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(
+                vmConfigName + ".customize [\"modifyvm\", :id, \"" + entry.getKey() + "\", \"" + entry.getValue() + "\"")
+            .append("\n");
+        return builder.toString();
+    }
 
     private static String createVmGuestConfig(String vmConfigName, String guest) {
         StringBuilder builder = new StringBuilder();

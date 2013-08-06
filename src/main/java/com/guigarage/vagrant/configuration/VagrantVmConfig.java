@@ -2,7 +2,9 @@ package com.guigarage.vagrant.configuration;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A configuration class that can be used to define and create a VM in Vagrant.
@@ -32,7 +34,10 @@ public class VagrantVmConfig {
     private boolean privateNetwork;
 
     private String guest;
-	
+
+    private Map<String, String> modifyVm;
+
+
 	/**
 	 * Constructs a configuration.
      * @param name name of the VM. This can be null
@@ -47,9 +52,10 @@ public class VagrantVmConfig {
      * @param guiMode true if the VM should run in gui mode. This means that VirtualBox is not running in headless mode
      * @param privateNetwork
      */
-	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest, Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork) {
+	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest, Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork, Map<String, String> modifyVm) {
 		this.portForwardings = new ArrayList<VagrantPortForwarding>();
         this.syncFolders = new ArrayList<VagrantSyncFolder>();
+        this.modifyVm = new HashMap<String, String>();
 		if(portForwardings != null) {
 			for(VagrantPortForwarding portForwarding : portForwardings) {
 				this.portForwardings.add(portForwarding);
@@ -60,6 +66,12 @@ public class VagrantVmConfig {
                 this.syncFolders.add(syncFolder);
             }
         }
+        if (modifyVm != null) {
+            for(Map.Entry<String, String> entry : modifyVm.entrySet()) {
+                this.modifyVm.put(entry.getKey(), entry.getValue());
+            }
+        }
+
 		this.puppetProvisionerConfig = puppetProvisionerConfig;
 		this.ip = ip;
 		this.name = name;
@@ -125,6 +137,10 @@ public class VagrantVmConfig {
 
     public List<VagrantSyncFolder> getSyncFolders() {
         return syncFolders;
+    }
+
+    public Map<String, String> getModifyVm() {
+        return modifyVm;
     }
 
     /**

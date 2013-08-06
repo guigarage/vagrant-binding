@@ -45,8 +45,12 @@ public class VagrantConfigurationUtilities {
 			builder.append(createPortForwardingConfig(vmName + "_config", portForwarding));
 		}
 
-        for (Map.Entry<String, String> entry : vmConfig.getModifyVm().entrySet()) {
-            builder.append(createModifyVmConfig(vmName + "_config", entry));
+        if (!vmConfig.getModifyVirtualBoxVm().isEmpty()) {
+            builder.append("config.vm.provider :virtualbox do |vb|\n");
+                for (Map.Entry<String, String> entry : vmConfig.getModifyVirtualBoxVm().entrySet()) {
+                    builder.append(createModifyVmConfig(entry));
+                }
+            builder.append("end\n");
         }
 
         for (VagrantSyncFolder syncFolder : vmConfig
@@ -94,10 +98,10 @@ public class VagrantConfigurationUtilities {
 		return builder.toString();
 	}
 
-    private static String createModifyVmConfig(String vmConfigName, Map.Entry<String, String> entry) {
+    private static String createModifyVmConfig(Map.Entry<String, String> entry) {
         StringBuilder builder = new StringBuilder();
-        builder.append(
-                vmConfigName + ".customize [\"modifyvm\", :id, \"" + entry.getKey() + "\", \"" + entry.getValue() + "\"")
+        builder.append("\t").append("vb.customize [\"modifyvm\", :id, \"" + entry.getKey() + "\", " +
+                "\"" + entry.getValue() + "\"]")
             .append("\n");
         return builder.toString();
     }

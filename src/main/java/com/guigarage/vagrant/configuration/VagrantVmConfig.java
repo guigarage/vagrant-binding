@@ -35,7 +35,7 @@ public class VagrantVmConfig {
 
     private String guest;
 
-    private Map<String, String> modifyVm;
+    private Map<String, String> modifyVirtualBoxVm;
 
 
 	/**
@@ -52,10 +52,10 @@ public class VagrantVmConfig {
      * @param guiMode true if the VM should run in gui mode. This means that VirtualBox is not running in headless mode
      * @param privateNetwork
      */
-	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest, Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork, Map<String, String> modifyVm) {
+	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest, Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork, Map<String, String> modifyVirtualBoxVm) {
 		this.portForwardings = new ArrayList<VagrantPortForwarding>();
         this.syncFolders = new ArrayList<VagrantSyncFolder>();
-        this.modifyVm = new HashMap<String, String>();
+        this.modifyVirtualBoxVm = new HashMap<String, String>();
 		if(portForwardings != null) {
 			for(VagrantPortForwarding portForwarding : portForwardings) {
 				this.portForwardings.add(portForwarding);
@@ -66,9 +66,9 @@ public class VagrantVmConfig {
                 this.syncFolders.add(syncFolder);
             }
         }
-        if (modifyVm != null) {
-            for(Map.Entry<String, String> entry : modifyVm.entrySet()) {
-                this.modifyVm.put(entry.getKey(), entry.getValue());
+        if (modifyVirtualBoxVm != null) {
+            for(Map.Entry<String, String> entry : modifyVirtualBoxVm.entrySet()) {
+                this.modifyVirtualBoxVm.put(entry.getKey(), entry.getValue());
             }
         }
 
@@ -139,8 +139,8 @@ public class VagrantVmConfig {
         return syncFolders;
     }
 
-    public Map<String, String> getModifyVm() {
-        return modifyVm;
+    public Map<String, String> getModifyVirtualBoxVm() {
+        return modifyVirtualBoxVm;
     }
 
     /**

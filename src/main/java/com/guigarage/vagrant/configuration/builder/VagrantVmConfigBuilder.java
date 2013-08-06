@@ -130,7 +130,7 @@ public class VagrantVmConfigBuilder {
 		return this;
 	}
 
-    public VagrantVmConfigBuilder withModifyVm(String name, String value) {
+    public VagrantVmConfigBuilder withModifyVirtualBoxVm(String name, String value) {
         this.modifyVm.put(name, value);
         return this;
     }

@@ -3,7 +3,9 @@ package com.guigarage.vagrant.configuration.builder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
 import com.guigarage.vagrant.configuration.VagrantPortForwarding;
@@ -35,9 +37,12 @@ public class VagrantVmConfigBuilder {
 
     private String guest;
 
+    private Map<String, String> modifyVm;
+
     public VagrantVmConfigBuilder() {
 		portForwardings = new ArrayList<VagrantPortForwarding>();
         syncFolders = new ArrayList<VagrantSyncFolder>();
+        modifyVm = new HashMap<String, String>();
 	}
 	
 	public static VagrantVmConfigBuilder create() {
@@ -124,11 +129,16 @@ public class VagrantVmConfigBuilder {
 		this.boxUrl = boxUrl;
 		return this;
 	}
-	
+
+    public VagrantVmConfigBuilder withModifyVm(String name, String value) {
+        this.modifyVm.put(name, value);
+        return this;
+    }
+
 	public VagrantVmConfig build() {
 		if(boxName == null) {
 			throw new VagrantBuilderException("No boxName defined");
 		}
-		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, guest, portForwardings, syncFolders, puppetProvisionerConfig, guiMode, privateNetwork);
+		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, guest, portForwardings, syncFolders, puppetProvisionerConfig, guiMode, privateNetwork, modifyVm);
 	}
 }

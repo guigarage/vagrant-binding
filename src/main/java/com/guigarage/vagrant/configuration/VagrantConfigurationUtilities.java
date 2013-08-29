@@ -161,7 +161,7 @@ public class VagrantConfigurationUtilities {
 
     private static String createBashProvisionScriptConfig(String vmConfigName, String bashProvisionScript) {
         StringBuilder builder = new StringBuilder();
-        builder.append(vmConfigName + ".vm.provision :shell, :path \"" + bashProvisionScript + "\"").append("\n");
+        builder.append(vmConfigName + ".vm.provision :shell, :path => \"" + bashProvisionScript + "\"").append("\n");
         return builder.toString();
     }
 

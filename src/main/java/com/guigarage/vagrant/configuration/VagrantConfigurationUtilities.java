@@ -45,10 +45,10 @@ public class VagrantConfigurationUtilities {
 			builder.append(createPortForwardingConfig(vmName + "_config", portForwarding));
 		}
 
-        if (!vmConfig.getModifyVirtualBoxVm().isEmpty()) {
+        if (!vmConfig.getCustomizeVm().isEmpty()) {
             builder.append("config.vm.provider :virtualbox do |vb|\n");
-                for (Map.Entry<String, String> entry : vmConfig.getModifyVirtualBoxVm().entrySet()) {
-                    builder.append(createModifyVmConfig(entry));
+            for (String[] customization : vmConfig.getCustomizeVm()) {
+                    builder.append(createCustomizedVmConfig(customization));
                 }
             builder.append("end\n");
         }
@@ -94,15 +94,32 @@ public class VagrantConfigurationUtilities {
 			builder.append(createPuppetProvisionerConfig(
 					vmName + "_config", puppetProvisionerConfig));
 		}
+
+        String bashProvisionScript = vmConfig.getBashProvisionScript();
+        if (bashProvisionScript != null) {
+            builder.append(createBashProvisionScriptConfig(vmName + "_config", bashProvisionScript));
+        }
+
 		builder.append("end").append("\n");
 		return builder.toString();
 	}
 
-    private static String createModifyVmConfig(Map.Entry<String, String> entry) {
+    private static String createCustomizedVmConfig(String[] entry) {
         StringBuilder builder = new StringBuilder();
-        builder.append("\t").append("vb.customize [\"modifyvm\", :id, \"" + entry.getKey() + "\", " +
-                "\"" + entry.getValue() + "\"]")
-            .append("\n");
+        builder.append("\t").append("vb.customize [");
+
+        for (int i = 0; i < entry.length; i++) {
+            if (entry[i].equals(":id")) {
+                builder.append(entry[i]);
+            } else {
+                builder.append("\"").append(entry[i]).append("\"");
+            }
+            if (i < entry.length - 1) {
+                builder.append(",");
+            }
+        }
+
+        builder.append("]\n");
         return builder.toString();
     }
 
@@ -141,8 +158,15 @@ public class VagrantConfigurationUtilities {
 						+ "\"").append("\n");
 		return builder.toString();
 	}
-	
-	private static String createHostNameConfig(String vmConfigName, String hostName) {
+
+    private static String createBashProvisionScriptConfig(String vmConfigName, String bashProvisionScript) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(vmConfigName + ".vm.provision :shell, :path \"" + bashProvisionScript + "\"").append("\n");
+        return builder.toString();
+    }
+
+
+    private static String createHostNameConfig(String vmConfigName, String hostName) {
 		StringBuilder builder = new StringBuilder();
 		if (hostName != null) {
 			builder.append(

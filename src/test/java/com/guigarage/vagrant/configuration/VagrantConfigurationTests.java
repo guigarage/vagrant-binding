@@ -34,7 +34,7 @@ public class VagrantConfigurationTests {
 		
 		try {
 			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<VagrantVmConfig>();
-			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, null, null, false, true, null));
+			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, null, null, false, true, null, null));
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(
 					vmConfigs);
 			Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);

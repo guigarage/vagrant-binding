@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.guigarage.vagrant.configuration.PuppetProvisionerConfig;
 import com.guigarage.vagrant.configuration.VagrantPortForwarding;
@@ -20,6 +19,8 @@ public class VagrantVmConfigBuilder {
     private List<VagrantSyncFolder> syncFolders;
 	
 	private PuppetProvisionerConfig puppetProvisionerConfig;
+
+    private String bashProvisionScript;
 	
 	private String name;
 
@@ -37,12 +38,12 @@ public class VagrantVmConfigBuilder {
 
     private String guest;
 
-    private Map<String, String> modifyVm;
+    private List<String[]> customizeVM;
 
     public VagrantVmConfigBuilder() {
 		portForwardings = new ArrayList<VagrantPortForwarding>();
         syncFolders = new ArrayList<VagrantSyncFolder>();
-        modifyVm = new HashMap<String, String>();
+        customizeVM = new ArrayList<String[]>();
 	}
 	
 	public static VagrantVmConfigBuilder create() {
@@ -89,6 +90,11 @@ public class VagrantVmConfigBuilder {
 		return this;
 	}
 
+    public VagrantVmConfigBuilder withBashProvisionScript(String bashProvisionScript) {
+        this.bashProvisionScript = bashProvisionScript;
+        return this;
+    }
+
     public VagrantVmConfigBuilder withPrivateNetworkIp(String ip) {
         this.ip = ip;
         this.privateNetwork = true;
@@ -130,8 +136,8 @@ public class VagrantVmConfigBuilder {
 		return this;
 	}
 
-    public VagrantVmConfigBuilder withModifyVirtualBoxVm(String name, String value) {
-        this.modifyVm.put(name, value);
+    public VagrantVmConfigBuilder withCustomizeVirtualBoxVm(String ... params) {
+        this.customizeVM.add(params);
         return this;
     }
 
@@ -139,6 +145,7 @@ public class VagrantVmConfigBuilder {
 		if(boxName == null) {
 			throw new VagrantBuilderException("No boxName defined");
 		}
-		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, guest, portForwardings, syncFolders, puppetProvisionerConfig, guiMode, privateNetwork, modifyVm);
+		return new VagrantVmConfig(name, ip, hostName, boxName, boxUrl, guest, portForwardings, syncFolders,
+                puppetProvisionerConfig, guiMode, privateNetwork, customizeVM, bashProvisionScript);
 	}
 }

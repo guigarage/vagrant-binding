@@ -35,8 +35,9 @@ public class VagrantVmConfig {
 
     private String guest;
 
-    private Map<String, String> modifyVirtualBoxVm;
+    private List<String[]> customizeVm;
 
+    private String bashProvisionScript;
 
 	/**
 	 * Constructs a configuration.
@@ -51,11 +52,16 @@ public class VagrantVmConfig {
      * @param puppetProvisionerConfig the puppet configuration for the VM. This can be null
      * @param guiMode true if the VM should run in gui mode. This means that VirtualBox is not running in headless mode
      * @param privateNetwork
+     * @param bashProvisionScript
      */
-	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest, Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders, PuppetProvisionerConfig puppetProvisionerConfig, boolean guiMode, boolean privateNetwork, Map<String, String> modifyVirtualBoxVm) {
+	public VagrantVmConfig(String name, String ip, String hostName, String boxName, URL boxUrl, String guest,
+                           Iterable<VagrantPortForwarding> portForwardings, List<VagrantSyncFolder> syncFolders,
+                           PuppetProvisionerConfig puppetProvisionerConfig,
+                           boolean guiMode, boolean privateNetwork,
+                           List<String[]> customizeVm, String bashProvisionScript) {
 		this.portForwardings = new ArrayList<VagrantPortForwarding>();
         this.syncFolders = new ArrayList<VagrantSyncFolder>();
-        this.modifyVirtualBoxVm = new HashMap<String, String>();
+        this.customizeVm = new ArrayList<String[]>();
 		if(portForwardings != null) {
 			for(VagrantPortForwarding portForwarding : portForwardings) {
 				this.portForwardings.add(portForwarding);
@@ -66,12 +72,10 @@ public class VagrantVmConfig {
                 this.syncFolders.add(syncFolder);
             }
         }
-        if (modifyVirtualBoxVm != null) {
-            for(Map.Entry<String, String> entry : modifyVirtualBoxVm.entrySet()) {
-                this.modifyVirtualBoxVm.put(entry.getKey(), entry.getValue());
-            }
+        if (customizeVm != null) {
+            this.customizeVm.addAll(customizeVm);
         }
-
+        this.bashProvisionScript = bashProvisionScript;
 		this.puppetProvisionerConfig = puppetProvisionerConfig;
 		this.ip = ip;
 		this.name = name;
@@ -126,8 +130,13 @@ public class VagrantVmConfig {
 	public PuppetProvisionerConfig getPuppetProvisionerConfig() {
 		return puppetProvisionerConfig;
 	}
-	
-	/**
+
+
+    public String getBashProvisionScript() {
+        return bashProvisionScript;
+    }
+
+    /**
 	 * Returns a iterator for all port forwardings of the VM
 	 * @return a iterator for all port forwardings
 	 */
@@ -139,8 +148,8 @@ public class VagrantVmConfig {
         return syncFolders;
     }
 
-    public Map<String, String> getModifyVirtualBoxVm() {
-        return modifyVirtualBoxVm;
+    public List<String[]>  getCustomizeVm() {
+        return customizeVm;
     }
 
     /**

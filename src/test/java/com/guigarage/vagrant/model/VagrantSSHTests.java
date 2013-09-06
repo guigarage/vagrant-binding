@@ -6,6 +6,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.guigarage.vagrant.Vagrant;
@@ -17,9 +19,24 @@ import com.guigarage.vagrant.configuration.builder.VagrantVmConfigBuilder;
 
 public class VagrantSSHTests {
 
-	@Test
+
+    private Vagrant vagrant;
+
+    @After
+    public void tearDown() throws Exception {
+        if (vagrant != null) {
+            vagrant.shutdown();
+        }
+
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
+    }
+
+    @Test
 	public void testSSHExecute() {
-		Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withLucid32Box()
@@ -59,7 +76,6 @@ public class VagrantSSHTests {
 	
 	@Test
 	public void testSSHUpload() {
-		Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withLucid32Box()

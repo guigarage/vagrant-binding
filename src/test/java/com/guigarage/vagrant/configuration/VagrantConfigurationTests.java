@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.guigarage.vagrant.Vagrant;
@@ -13,8 +15,23 @@ import com.guigarage.vagrant.model.VagrantEnvironment;
 import com.guigarage.vagrant.model.VagrantVm;
 
 public class VagrantConfigurationTests {
-	
-	@Test
+
+    private Vagrant vagrant;
+
+    @After
+    public void tearDown() throws Exception {
+        if (vagrant != null) {
+            vagrant.shutdown();
+        }
+
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
+    }
+
+    @Test
 	public void testSimpleConfiguration() {
 		try {
 			new VagrantEnvironmentConfig(null);
@@ -37,7 +54,6 @@ public class VagrantConfigurationTests {
 			vmConfigs.add(new VagrantVmConfig("unitTestVm", null, null, null, null, null, null, null, null, false, true, null, null));
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(
 					vmConfigs);
-			Vagrant vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 			File tempDir = VagrantTestUtils.createTempDir();
 			VagrantEnvironment env = vagrant.createEnvironment(tempDir, config);
 			VagrantVm vm = env.getAllVms().iterator().next();

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.jruby.RubyObject;
 import org.jruby.embed.LocalContextScope;
+import org.jruby.embed.LocalVariableBehavior;
 import org.jruby.embed.ScriptingContainer;
 
 import com.guigarage.vagrant.configuration.VagrantConfiguration;
@@ -21,6 +22,12 @@ public class Vagrant {
 
 	private ScriptingContainer scriptingContainer;
 
+    public void shutdown() {
+        if (scriptingContainer != null) {
+            scriptingContainer.terminate();
+        }
+    }
+
     public enum LogLevel {
         DEBUG,
         INFO,
@@ -29,12 +36,12 @@ public class Vagrant {
     }
 
 	public Vagrant(LogLevel logLevel) {
-		scriptingContainer = new ScriptingContainer(
-				LocalContextScope.SINGLETHREAD);
+		scriptingContainer = new ScriptingContainer(LocalContextScope.THREADSAFE, LocalVariableBehavior.PERSISTENT);
 
         Map currentEnv = scriptingContainer.getEnvironment();
         Map newEnv = new HashMap(currentEnv);
         newEnv.put("VAGRANT_LOG", logLevel.toString());
+
         scriptingContainer.setEnvironment(newEnv);
 	}
 	

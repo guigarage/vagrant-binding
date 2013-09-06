@@ -2,8 +2,11 @@ package com.guigarage.vagrant.configuration;
 
 import java.util.ArrayList;
 
+import com.guigarage.vagrant.Vagrant;
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class VagrantConfigurationUtilitiesTest {

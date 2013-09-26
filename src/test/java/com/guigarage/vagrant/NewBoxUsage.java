@@ -6,6 +6,8 @@ import java.io.IOException;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.guigarage.vagrant.configuration.VagrantEnvironmentConfig;
@@ -17,16 +19,32 @@ import com.guigarage.vagrant.util.VagrantUtils;
 
 public class NewBoxUsage {
 
-	@Test
-	public void initWithNewBox() {
-		String boxName = "unitTestBox" + System.currentTimeMillis();
 
-		Vagrant vagrant = new Vagrant(true);
+    private Vagrant vagrant;
+
+    @After
+    public void tearDown() throws Exception {
+        if (vagrant != null) {
+            vagrant.shutdown();
+        }
+
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
+    }
+
+
+    @Test
+	public void initWithNewBox() {
+		String boxName = "unittestbox" + System.currentTimeMillis();
+
 		File vagrantTempDir = VagrantTestUtils.createTempDir();
 		VagrantVmConfig vmConfig = new VagrantVmConfigBuilder()
 				.withBoxName(boxName)
 				.withBoxUrl(VagrantUtils.getInstance().getLucid32Url())
-				.withName("UniTestVm").build();
+				.withName("unitestvm").build();
 		VagrantEnvironmentConfig envConfig = new VagrantEnvironmentConfigBuilder()
 				.withVagrantVmConfig(vmConfig).build();
 

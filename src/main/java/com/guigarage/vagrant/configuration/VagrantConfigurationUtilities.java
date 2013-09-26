@@ -1,7 +1,9 @@
 package com.guigarage.vagrant.configuration;
 
+import com.guigarage.vagrant.util.RandomString;
+
 import java.net.URL;
-import java.util.UUID;
+import java.util.Map;
 
 /**
  * Some utilities for the configuration of Vagrant environments. This class creates configurationfiles for Vagrant.
@@ -10,13 +12,14 @@ import java.util.UUID;
  */
 public class VagrantConfigurationUtilities {
 
-	private VagrantConfigurationUtilities() {
+    private VagrantConfigurationUtilities() {
 	}
 
 	public static String createVagrantFileContent(
 			VagrantEnvironmentConfig config) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Vagrant::Config.run do |config|").append("\n");
+        builder.append("VAGRANTFILE_API_VERSION = \"2\"\n");
+		builder.append("Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|").append("\n");
 		
 		//TODO: Wenn nicht MultiVM kann man hier auch ein einfaches Config-File erstellen und so primaryVm etc. nutzen...
 		
@@ -31,7 +34,7 @@ public class VagrantConfigurationUtilities {
 		StringBuilder builder = new StringBuilder();
 		String vmName = vmConfig.getName();
 		if (vmName == null) {
-			vmName = UUID.randomUUID().toString();
+			vmName = RandomString.randomString(10);
 		}
 		builder.append(
 				"config.vm.define :" + vmName + " do |" + vmName
@@ -41,7 +44,25 @@ public class VagrantConfigurationUtilities {
 				.getPortForwardings()) {
 			builder.append(createPortForwardingConfig(vmName + "_config", portForwarding));
 		}
+
+        if (!vmConfig.getCustomizeVm().isEmpty()) {
+            builder.append("config.vm.provider :virtualbox do |vb|\n");
+            for (String[] customization : vmConfig.getCustomizeVm()) {
+                    builder.append(createCustomizedVmConfig(customization));
+                }
+            builder.append("end\n");
+        }
+
+        for (VagrantSyncFolder syncFolder : vmConfig
+                .getSyncFolders()) {
+            builder.append(createSyncFolderConfig(vmName + "_config", syncFolder));
+        }
+
 		builder.append(createBoxNameConfig(vmName + "_config", vmConfig.getBoxName()));
+
+        if (vmConfig.getGuest() != null) {
+            builder.append(createVmGuestConfig(vmName + "_config", vmConfig.getGuest()));
+        }
 
 		URL boxUrl = vmConfig.getBoxUrl();
 		if (boxUrl != null) {
@@ -50,7 +71,11 @@ public class VagrantConfigurationUtilities {
 
 		String ip = vmConfig.getIp();
 		if (ip != null) {
-			builder.append(createHostOnlyIpConfig(vmName + "_config", ip));
+            if (vmConfig.isPrivateNetwork()) {
+                builder.append(createPrivateNetworkIpConfig(vmName + "_config", ip));
+            } else {
+                builder.append(createHostOnlyIpConfig(vmName + "_config", ip));
+            }
 		}
 
 		boolean guiMode = vmConfig.isGuiMode();
@@ -69,30 +94,63 @@ public class VagrantConfigurationUtilities {
 			builder.append(createPuppetProvisionerConfig(
 					vmName + "_config", puppetProvisionerConfig));
 		}
+
+        String bashProvisionScript = vmConfig.getBashProvisionScript();
+        if (bashProvisionScript != null) {
+            builder.append(createBashProvisionScriptConfig(vmName + "_config", bashProvisionScript));
+        }
+
 		builder.append("end").append("\n");
 		return builder.toString();
 	}
-	
-	private static String createPortForwardingConfig(String vmConfigName, VagrantPortForwarding portForwarding) {
+
+    private static String createCustomizedVmConfig(String[] entry) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("\t").append("vb.customize [");
+
+        for (int i = 0; i < entry.length; i++) {
+            if (entry[i].equals(":id")) {
+                builder.append(entry[i]);
+            } else {
+                builder.append("\"").append(entry[i]).append("\"");
+            }
+            if (i < entry.length - 1) {
+                builder.append(",");
+            }
+        }
+
+        builder.append("]\n");
+        return builder.toString();
+    }
+
+    private static String createVmGuestConfig(String vmConfigName, String guest) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(
+                vmConfigName + ".vm.guest = \"" + guest
+                        + "\"").append("\n");
+        return builder.toString();
+    }
+
+    private static String createSyncFolderConfig(String vmConfigName, VagrantSyncFolder syncFolder) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(vmConfigName + ".vm.synced_folder ")
+                .append("'" + syncFolder.getSource()).append("', ")
+                .append("'" + syncFolder.getDestination()).append("', ")
+                .append("disabled: " + syncFolder.isDisabled())
+                .append("\n");
+        return builder.toString();
+
+    }
+
+    private static String createPortForwardingConfig(String vmConfigName, VagrantPortForwarding portForwarding) {
 		StringBuilder builder = new StringBuilder();
-		String portForwardingName = portForwarding.getName();
-		if (portForwardingName != null) {
-			builder.append(
-					vmConfigName + ".vm.forward_port \""
-							+ portForwardingName + "\", "
-							+ portForwarding.getGuestport() + ", "
-							+ portForwarding.getHostport())
-					.append("\n");
-		} else {
-			builder.append(
-					vmConfigName + ".vm.forward_port "
-							+ portForwarding.getGuestport() + ", "
-							+ portForwarding.getHostport())
-					.append("\n");
-		}
-		return builder.toString();
+        builder.append(
+                vmConfigName + ".vm.network :forwarded_port, guest: " + portForwarding.getGuestport()
+                        + ", host: " + portForwarding.getHostport())
+                .append("\n");
+        return builder.toString();
 	}
-	
+
 	private static String createBoxNameConfig(String vmConfigName, String boxName) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(
@@ -100,12 +158,19 @@ public class VagrantConfigurationUtilities {
 						+ "\"").append("\n");
 		return builder.toString();
 	}
-	
-	private static String createHostNameConfig(String vmConfigName, String hostName) {
+
+    private static String createBashProvisionScriptConfig(String vmConfigName, String bashProvisionScript) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(vmConfigName + ".vm.provision :shell, :path => \"" + bashProvisionScript + "\"").append("\n");
+        return builder.toString();
+    }
+
+
+    private static String createHostNameConfig(String vmConfigName, String hostName) {
 		StringBuilder builder = new StringBuilder();
 		if (hostName != null) {
 			builder.append(
-					vmConfigName + ".vm.host_name = \"" + hostName + ".local\"")
+					vmConfigName + ".vm.hostname = \"" + hostName + "\"")
 					.append("\n");
 		}
 		return builder.toString();
@@ -130,6 +195,16 @@ public class VagrantConfigurationUtilities {
 		}
 		return builder.toString();
 	}
+
+    private static String createPrivateNetworkIpConfig(String vmConfigName, String ip) {
+        StringBuilder builder = new StringBuilder();
+        if (ip != null) {
+            builder.append(
+                    vmConfigName + ".vm.network :private_network, ip: \"" + ip + "\"")
+                    .append("\n");
+        }
+        return builder.toString();
+    }
 	
 	private static String createGuiModeConfig(String vmConfigName) {
 		StringBuilder builder = new StringBuilder();

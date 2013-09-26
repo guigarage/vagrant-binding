@@ -40,6 +40,6 @@ public class VagrantPortForwardingBuilder {
 		if(hostport < 0) {
 			throw new VagrantBuilderException("no hostport defined");
 		}
-		return new VagrantPortForwarding(name, guestport, hostport);
+		return new VagrantPortForwarding(guestport, hostport);
 	}
 }

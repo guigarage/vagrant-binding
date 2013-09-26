@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.guigarage.vagrant.Vagrant;
@@ -17,7 +19,22 @@ import com.guigarage.vagrant.model.VagrantEnvironment;
 
 public class VagrantFolderTemplateTest {
 
-	@Test
+    private Vagrant vagrant;
+
+    @After
+    public void tearDown() throws Exception {
+        if (vagrant != null) {
+            vagrant.shutdown();
+        }
+
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
+    }
+
+    @Test
 	public void testFolderTemplates() {
 		File localeFolder = new File(FileUtils.getTempDirectory(), UUID
 				.randomUUID().toString());
@@ -46,7 +63,6 @@ public class VagrantFolderTemplateTest {
 					.withVagrantFolderTemplateConfiguration(
 							folderTemplateConfiguration).build();
 
-			Vagrant vagrant = new Vagrant(true);
 			VagrantEnvironment environment = null;
 			try {
 				environment = vagrant.createEnvironment(vagrantPath,
@@ -97,7 +113,6 @@ public class VagrantFolderTemplateTest {
 					.withVagrantFolderTemplateConfiguration(
 							folderTemplateConfiguration).build();
 
-			Vagrant vagrant = new Vagrant(true);
 			VagrantEnvironment environment = null;
 			try {
 				environment = vagrant.createEnvironment(vagrantPath,
@@ -133,7 +148,6 @@ public class VagrantFolderTemplateTest {
 					.withVagrantEnvironmentConfig(environmentConfig)
 					.build();
 
-			Vagrant vagrant = new Vagrant(true);
 			try {
 				vagrant.createEnvironment(vagrantPath,
 						vagrantConfiguration);

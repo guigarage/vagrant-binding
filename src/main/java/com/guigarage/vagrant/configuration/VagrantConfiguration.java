@@ -22,11 +22,11 @@ public class VagrantConfiguration {
 	
 	public VagrantConfiguration(VagrantEnvironmentConfig environmentConfig, Iterable<VagrantFileTemplateConfiguration> fileTemplateConfigurations, Iterable<VagrantFolderTemplateConfiguration> folderTemplateConfigurations) {
 		this.environmentConfig = environmentConfig;
-		this.fileTemplateConfigurations = new ArrayList<>();
+		this.fileTemplateConfigurations = new ArrayList<VagrantFileTemplateConfiguration>();
 		for(VagrantFileTemplateConfiguration fileTemplateConfiguration : fileTemplateConfigurations) {
 			this.fileTemplateConfigurations.add(fileTemplateConfiguration);
 		}
-		this.folderTemplateConfigurations = new ArrayList<>();
+		this.folderTemplateConfigurations = new ArrayList<VagrantFolderTemplateConfiguration>();
 		for(VagrantFolderTemplateConfiguration folderTemplateConfiguration : folderTemplateConfigurations) {
 			this.folderTemplateConfigurations.add(folderTemplateConfiguration);
 		}

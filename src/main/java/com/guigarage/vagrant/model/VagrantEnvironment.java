@@ -3,15 +3,12 @@ package com.guigarage.vagrant.model;
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.jruby.RubyArray;
-import org.jruby.RubyBoolean;
-import org.jruby.RubyNil;
-import org.jruby.RubyObject;
-import org.jruby.RubyString;
+import org.jruby.*;
 import org.jruby.exceptions.RaiseException;
 
 import com.guigarage.vagrant.Vagrant;
 import com.guigarage.vagrant.util.VagrantException;
+import org.jruby.runtime.builtin.IRubyObject;
 
 /**
  * A {@link VagrantEnvironment} manages a set of VMs. By using the environment you can manage the lifecycle of all VMs inside the environment or access a specific VM.
@@ -22,12 +19,15 @@ public class VagrantEnvironment {
 
 	private RubyObject vagrantEnvironment;
 
+    private RubyObject defaultProfider;
+
 	/**
 	 * The {@link VagrantEnvironment} is a Wrapper for a Vagrant environment. The class contains the JRuby object for the connections and forwards the method calls to it. This constructor is used by the builder classes or the {@link Vagrant} class. You do not need to call it in your code
 	 * @param vagrantEnvironment The Vagrant environment connection object
 	 */
 	public VagrantEnvironment(RubyObject vagrantEnvironment) {
 		this.vagrantEnvironment = vagrantEnvironment;
+        this.defaultProfider = (RubyObject) vagrantEnvironment.callMethod("default_provider");
 	}
 
 	/**
@@ -114,8 +114,7 @@ public class VagrantEnvironment {
 	 */
 	public boolean isMultiVmEnvironment() {
 		try {
-			return ((RubyBoolean) vagrantEnvironment.callMethod("multivm?"))
-					.isTrue();
+			return ((RubyArray) vagrantEnvironment.callMethod("machine_names")).length().getNativeTypeIndex() > 1;
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
 		}
@@ -142,7 +141,7 @@ public class VagrantEnvironment {
 		try {
 			RubyArray boxes = (RubyArray) ((RubyObject) vagrantEnvironment
 					.callMethod("boxes")).getInternalVariable("@boxes");
-			ArrayList<String> ret = new ArrayList<>();
+			ArrayList<String> ret = new ArrayList<String>();
 			for (Object box : boxes) {
 				ret.add(((RubyObject) box).callMethod("name").toString());
 			}
@@ -159,10 +158,10 @@ public class VagrantEnvironment {
 	public Iterable<VagrantVm> getAllVms() {
 		try {
 			RubyArray o = (RubyArray) vagrantEnvironment
-					.callMethod("vms_ordered");
-			ArrayList<VagrantVm> vms = new ArrayList<>();
-			for (Object vm : o) {
-				vms.add(new VagrantVm((RubyObject) vm));
+					.callMethod("machine_names");
+			ArrayList<VagrantVm> vms = new ArrayList<VagrantVm>();
+			for (IRubyObject vm : o.toJavaArray()) {
+				vms.add(new VagrantVm((RubyObject) vagrantEnvironment.callMethod("machine", vm, defaultProfider)));
 			}
 			return vms;
 		} catch (RaiseException exception) {
@@ -177,8 +176,8 @@ public class VagrantEnvironment {
 	 */
 	public VagrantVm getVm(int index) {
 		try {
-			RubyArray o = (RubyArray) vagrantEnvironment
-					.callMethod("vms_ordered");
+            RubyArray o = (RubyArray) vagrantEnvironment
+					.callMethod("machine_names");
 			return new VagrantVm((RubyObject) o.get(index));
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);
@@ -189,10 +188,10 @@ public class VagrantEnvironment {
 	 * Returns the count of all VMs configured in this environment
 	 * @return the count of all VMs
 	 */
-	public int getVmCount() {
+	public int getMachineCount() {
 		try {
 			RubyArray o = (RubyArray) vagrantEnvironment
-					.callMethod("vms_ordered");
+					.callMethod("machine_names");
 			return o.size();
 		} catch (RaiseException exception) {
 			throw new VagrantException(exception);

@@ -27,6 +27,8 @@ public class VagrantTestRule extends TestWatcher {
 
 	private VagrantEnvironment environment;
 
+    private Vagrant vagrant;
+
 	private File vagrantDir;
 
 	/**
@@ -97,7 +99,7 @@ public class VagrantTestRule extends TestWatcher {
 			throw new VagrantException("Error while creating "
 					+ this.getClass().getSimpleName(), e);
 		}
-		Vagrant vagrant = new Vagrant(true);
+		vagrant = new Vagrant(Vagrant.LogLevel.DEBUG);
 		environment = vagrant.createEnvironment(vagrantDir);
 	}
 
@@ -133,6 +135,9 @@ public class VagrantTestRule extends TestWatcher {
 				throw new VagrantException("Can't clean Vagrantfolder", e2);
 			}
 		}
+        if (vagrant != null) {
+            vagrant.shutdown();
+        }
 	}
 
 }

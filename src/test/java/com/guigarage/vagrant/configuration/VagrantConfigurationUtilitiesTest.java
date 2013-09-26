@@ -2,8 +2,11 @@ package com.guigarage.vagrant.configuration;
 
 import java.util.ArrayList;
 
+import com.guigarage.vagrant.Vagrant;
 import junit.framework.Assert;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class VagrantConfigurationUtilitiesTest {
@@ -21,7 +24,9 @@ public class VagrantConfigurationUtilitiesTest {
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(null);
 			String vagrantFileContent = VagrantConfigurationUtilities
 					.createVagrantFileContent(config);
-			String expected = "Vagrant::Config.run do |config|" + "\n" + "end";
+            String expected = "VAGRANTFILE_API_VERSION = \"2\"\n" +
+                              "Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|\n" +
+                              "end";
 			assertTrimEquals(expected, vagrantFileContent);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -29,16 +34,17 @@ public class VagrantConfigurationUtilitiesTest {
 		}
 		
 		try {
-			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<>();
-			vmConfigs.add(new VagrantVmConfig("unitTest", null, null, "lucid32", null, null, null, false));
+			ArrayList<VagrantVmConfig> vmConfigs = new ArrayList<VagrantVmConfig>();
+			vmConfigs.add(new VagrantVmConfig("unitTest", null, null, "lucid32", null, null, null, null, null, false, false, null, null));
 			VagrantEnvironmentConfig config = new VagrantEnvironmentConfig(vmConfigs);
 			String vagrantFileContent = VagrantConfigurationUtilities
 					.createVagrantFileContent(config);
-			String expected = "Vagrant::Config.run do |config|" + "\n" +
-			"config.vm.define :unitTest do |unitTest_config|" + "\n" +
-			"unitTest_config.vm.box = \"lucid32\""+ "\n" +
-			"end"+ "\n" +
-			"end";
+            String expected = "VAGRANTFILE_API_VERSION = \"2\"\n" +
+                    "Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|\n" +
+                    "config.vm.define :unitTest do |unitTest_config|" + "\n" +
+                    "unitTest_config.vm.box = \"lucid32\""+ "\n" +
+                    "end"+ "\n" +
+                    "end";
 			assertTrimEquals(expected, vagrantFileContent);
 		} catch (Exception e) {
 			e.printStackTrace();

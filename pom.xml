@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.guigarage</groupId>
 	<artifactId>vagrant-binding</artifactId>
-	<version>1.2.7-SNAPSHOT</version>
+	<version>1.2.7</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

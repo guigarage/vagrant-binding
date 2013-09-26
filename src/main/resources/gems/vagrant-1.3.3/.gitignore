@@ -1,0 +1,47 @@
+# OS-specific
+.DS_Store
+
+# Vagrant stuff
+acceptance_config.yml
+boxes/*
+/Vagrantfile
+/.vagrant
+
+# Bundler/Rubygems
+*.gem
+.bundle
+pkg/*
+tags
+/Gemfile.lock
+test/tmp/
+
+# Documentation
+_site/*
+.yardoc/
+doc/
+
+# Python
+*.pyc
+
+# Rubinius
+*.rbc
+
+# IDE junk
+.idea/*
+*.iml
+
+# Ruby Managers
+.rbenv
+.ruby-gemset
+.ruby-version
+.rvmrc
+
+# Website: docs
+website/docs/.sass-cache
+website/docs/build
+website/docs/Rakefile
+
+# Website: www
+website/www/.sass-cache
+website/www/build
+website/www/Rakefile
